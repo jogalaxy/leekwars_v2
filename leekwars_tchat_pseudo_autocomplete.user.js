@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Pseudo Autocomplete
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Ajout de l'autocomplétion pour les pseudos dans le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -11,114 +11,109 @@
 // @grant         none
 // ==/UserScript==
 
-LW.init(function()
+(function()
 {
 
-	_.view.load('main', false, function()
+	var autocompleteNames = [];
+
+	function autocompleteChat(chat)
 	{
 
-		LW.chat.autocompleteNames = [];
+		var startNamePos = chat.getSelectionStart();
+		var endNamePos = chat.getSelectionStart()-1;
 
-		function autocompleteChat(chat)
+		while(--startNamePos >= 0)
+			if (chat.val().substr(startNamePos,1) == " ")
+				break;
+
+		while(++endNamePos < chat.val().length)
+			if (chat.val().substr(endNamePos,1) == " ")
+				break;
+
+		var currentName = chat.val().substring(startNamePos + 1, endNamePos);
+
+		if (autocompleteNames.length == 0 && currentName.length > 0)
 		{
 
-			var startNamePos = chat.getSelectionStart();
-			var endNamePos = chat.getSelectionStart()-1;
-
-			while(--startNamePos >= 0)
-				if (chat.val().substr(startNamePos,1) == " ")
-					break;
-
-			while(++endNamePos < chat.val().length)
-				if (chat.val().substr(endNamePos,1) == " ")
-					break;
-
-			var currentName = chat.val().substring(startNamePos + 1, endNamePos);
-
-			if (LW.chat.autocompleteNames.length == 0 && currentName.length > 0)
+			for (var lang in LW.chat.messages)
 			{
-
-				for (var lang in LW.chat.messages)
+				for (var message in LW.chat.messages[lang])
 				{
-					for (var message in LW.chat.messages[lang])
-					{
-						var name = LW.chat.messages[lang][message][2];
-						if (name.substr(0, currentName.length).toLowerCase() == currentName.toLowerCase() && LW.chat.autocompleteNames.indexOf(name) == -1)
-								LW.chat.autocompleteNames.push(name);
-					}
+					var name = LW.chat.messages[lang][message][2];
+					if (name.substr(0, currentName.length).toLowerCase() == currentName.toLowerCase() && autocompleteNames.indexOf(name) == -1)
+							autocompleteNames.push(name);
 				}
-
-				if (LW.chat.autocompleteNames.length > 0)
-				{
-
-					var before = chat.val().substring(0, startNamePos + 1);
-					var after = chat.val().substring(endNamePos);
-					currentName = LW.chat.autocompleteNames[LW.chat.autocompleteNames.length-1];
-
-					chat.val(before + currentName + after);
-					chat.setCursorPosition(startNamePos + currentName.length + 1);
-
-				}
-
 			}
-			else
+
+			if (autocompleteNames.length > 0)
 			{
-				var currentPos = LW.chat.autocompleteNames.indexOf(currentName);
-				if (currentPos != -1)
-				{
-					currentPos++;
-					if (currentPos > LW.chat.autocompleteNames.length - 1) currentPos = 0;
 
-					var before = chat.val().substring(0, startNamePos + 1);
-					var after = chat.val().substring(endNamePos);
-					currentName = LW.chat.autocompleteNames[currentPos];
+				var before = chat.val().substring(0, startNamePos + 1);
+				var after = chat.val().substring(endNamePos);
+				currentName = autocompleteNames[autocompleteNames.length-1];
 
-					chat.val(before + currentName + after);
-					chat.setCursorPosition(startNamePos + currentName.length + 1);
-				}
+				chat.val(before + currentName + after);
+				chat.setCursorPosition(startNamePos + currentName.length + 1);
+
 			}
 
 		}
-
-		$(document).on('keydown', '#social-panel .chat-input', function(e)
+		else
 		{
-			if (e.keyCode === 9)
+			var currentPos = autocompleteNames.indexOf(currentName);
+			if (currentPos != -1)
 			{
-				e.preventDefault();
-				autocompleteChat($('#social-panel .chat-input'));
-			}
-			else
-			{
-				LW.chat.autocompleteNames = [];
-			}
-		});
+				currentPos++;
+				if (currentPos > autocompleteNames.length - 1) currentPos = 0;
 
-		$(document).on('keydown', '#chat-input', function(e)
+				var before = chat.val().substring(0, startNamePos + 1);
+				var after = chat.val().substring(endNamePos);
+				currentName = autocompleteNames[currentPos];
+
+				chat.val(before + currentName + after);
+				chat.setCursorPosition(startNamePos + currentName.length + 1);
+			}
+		}
+
+	}
+
+	$(document).on('keydown', '#social-panel .chat-input', function(e)
+	{
+		if (e.keyCode === 9)
 		{
-			if (e.keyCode === 9)
-			{
-				e.preventDefault();
-				autocompleteChat($('#chat-input'));
-			}
-			else
-			{
-				LW.chat.autocompleteNames = [];
-			}
-		});
-
-		$(document).on('click', '#social-panel .chat-input', function(e)
+			e.preventDefault();
+			autocompleteChat($('#social-panel .chat-input'));
+		}
+		else
 		{
-			LW.chat.autocompleteNames = [];
-		});
-
-		$(document).on('click', '#chat-input', function(e)
-		{
-			LW.chat.autocompleteNames = [];
-		});
-
+			autocompleteNames = [];
+		}
 	});
 
-});
+	$(document).on('keydown', '#chat-input', function(e)
+	{
+		if (e.keyCode === 9)
+		{
+			e.preventDefault();
+			autocompleteChat($('#chat-input'));
+		}
+		else
+		{
+			autocompleteNames = [];
+		}
+	});
+
+	$(document).on('click', '#social-panel .chat-input', function(e)
+	{
+		autocompleteNames = [];
+	});
+
+	$(document).on('click', '#chat-input', function(e)
+	{
+		autocompleteNames = [];
+	});
+
+})();
 
 
 
