@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Pseudo Autocomplete
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.4
 // @description   Ajout de l'autocomplétion pour les pseudos dans le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_pseudo_autocomplete.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_pseudo_autocomplete.user.js
-// @match         http://beta.leekwars.com/*
+// @match         http://leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
@@ -16,21 +16,21 @@
 
 	var autocompleteNames = [];
 
-	function autocompleteChat(chat)
+	function autocompleteChat(_chat)
 	{
 
-		var startNamePos = chat.getSelectionStart();
-		var endNamePos = chat.getSelectionStart()-1;
+		var startNamePos = _chat.getSelectionStart();
+		var endNamePos = _chat.getSelectionStart()-1;
 
 		while(--startNamePos >= 0)
-			if (chat.val().substr(startNamePos,1) == " ")
+			if (_chat.val().substr(startNamePos,1) == " ")
 				break;
 
-		while(++endNamePos < chat.val().length)
-			if (chat.val().substr(endNamePos,1) == " ")
+		while(++endNamePos < _chat.val().length)
+			if (_chat.val().substr(endNamePos,1) == " ")
 				break;
 
-		var currentName = chat.val().substring(startNamePos + 1, endNamePos);
+		var currentName = _chat.val().substring(startNamePos + 1, endNamePos);
 
 		if (autocompleteNames.length == 0 && currentName.length > 0)
 		{
@@ -48,12 +48,12 @@
 			if (autocompleteNames.length > 0)
 			{
 
-				var before = chat.val().substring(0, startNamePos + 1);
-				var after = chat.val().substring(endNamePos);
-				currentName = autocompleteNames[autocompleteNames.length-1];
+				var before = _chat.val().substring(0, startNamePos + 1);
+				var after = _chat.val().substring(endNamePos);
+				currentName = autocompleteNames[autocompleteNames.length-1] + " ";
 
-				chat.val(before + currentName + after);
-				chat.setCursorPosition(startNamePos + currentName.length + 1);
+				_chat.val(before + currentName + after);
+				_chat.setCursorPosition(startNamePos + currentName.length + 1);
 
 			}
 
@@ -66,12 +66,12 @@
 				currentPos++;
 				if (currentPos > autocompleteNames.length - 1) currentPos = 0;
 
-				var before = chat.val().substring(0, startNamePos + 1);
-				var after = chat.val().substring(endNamePos);
-				currentName = autocompleteNames[currentPos];
+				var before = _chat.val().substring(0, startNamePos + 1);
+				var after = _chat.val().substring(endNamePos);
+				currentName = autocompleteNames[currentPos] + " ";
 
-				chat.val(before + currentName + after);
-				chat.setCursorPosition(startNamePos + currentName.length + 1);
+				_chat.val(before + currentName + after);
+				_chat.setCursorPosition(startNamePos + currentName.length + 1);
 			}
 		}
 
