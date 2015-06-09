@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Pseudo Autocomplete
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.4
+// @version       0.5
 // @description   Ajout de l'autocomplétion pour les pseudos dans le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -19,8 +19,14 @@
 	function autocompleteChat(_chat)
 	{
 
-		var startNamePos = _chat.getSelectionStart();
-		var endNamePos = _chat.getSelectionStart()-1;
+		var startNamePos = getSelectionStart(_chat);
+		var endNamePos = getSelectionStart(_chat)-1;
+
+		if (autocompleteNames.length != 0)
+		{
+			startNamePos = getSelectionStart(_chat)-1;
+			endNamePos = getSelectionStart(_chat)-2;
+		}
 
 		while(--startNamePos >= 0)
 			if (_chat.val().substr(startNamePos,1) == " ")
@@ -53,7 +59,7 @@
 				currentName = autocompleteNames[autocompleteNames.length-1] + " ";
 
 				_chat.val(before + currentName + after);
-				_chat.setCursorPosition(startNamePos + currentName.length + 1);
+				setCursorPosition(_chat, startNamePos + currentName.length + 1);
 
 			}
 
@@ -67,11 +73,11 @@
 				if (currentPos > autocompleteNames.length - 1) currentPos = 0;
 
 				var before = _chat.val().substring(0, startNamePos + 1);
-				var after = _chat.val().substring(endNamePos);
+				var after = _chat.val().substring(endNamePos + 1);
 				currentName = autocompleteNames[currentPos] + " ";
 
 				_chat.val(before + currentName + after);
-				_chat.setCursorPosition(startNamePos + currentName.length + 1);
+				setCursorPosition(_chat, startNamePos + currentName.length + 1);
 			}
 		}
 
@@ -113,89 +119,88 @@
 		autocompleteNames = [];
 	});
 
+	function getCursorPosition(_this)
+	{
+		if (_this.lengh == 0) return -1;
+		return getSelectionStart(_this);
+	}
+
+	function setCursorPosition(_this, position)
+	{
+		if (_this.lengh == 0) return this;
+		return setSelection(_this, position, position);
+	}
+
+	function getSelection(_this)
+	{
+		if (_this.lengh == 0) return -1;
+		var s = getSelectionStart(_this);
+		var e = getSelectionEnd(_this);
+		return this[0].value.substring(s,e);
+	}
+
+	function getSelectionStart(_this)
+	{
+		if (_this.lengh == 0) return -1;
+		input = _this[0];
+
+		var pos = input.value.length;
+
+		if (input.createTextRange)
+		{
+			var r = document.selection.createRange().duplicate();
+			r.moveEnd('character', input.value.length);
+			if (r.text == '') 
+			pos = input.value.length;
+			pos = input.value.lastIndexOf(r.text);
+		}
+		else if (typeof(input.selectionStart)!="undefined")
+			pos = input.selectionStart;
+
+		return pos;
+	}
+
+	function getSelectionEnd(_this)
+	{
+		if (_this.lengh == 0) return -1;
+		input = _this[0];
+
+		var pos = input.value.length;
+
+		if (input.createTextRange)
+		{
+			var r = document.selection.createRange().duplicate();
+			r.moveStart('character', -input.value.length);
+			if (r.text == '') 
+			pos = input.value.length;
+			pos = input.value.lastIndexOf(r.text);
+		}
+		else if(typeof(input.selectionEnd)!="undefined")
+			pos = input.selectionEnd;
+
+		return pos;
+	}
+
+	function setSelection(_this, selectionStart, selectionEnd)
+	{
+		if (_this.lengh == 0) return this;
+		input = _this[0];
+
+		if (input.createTextRange)
+		{
+			var range = input.createTextRange();
+			range.collapse(true);
+			range.moveEnd('character', selectionEnd);
+			range.moveStart('character', selectionStart);
+			range.select();
+		}
+		else if (input.setSelectionRange)
+		{
+			input.focus();
+			input.setSelectionRange(selectionStart, selectionEnd);
+		}
+
+		return _this;
+	}
+
 })();
-
-
-
-/**
- * Cursor Functions
- *
- * Used for setting and getting text cursor position within an input
- * and textarea field. Also used to get and set selection range.
- * 
- * @author Branden Cash
- * @email brandencash@crutzdesigns.com
- */
- 
-(function( $ ){
-  jQuery.fn.getCursorPosition = function(){
-    if(this.lengh == 0) return -1;
-    return $(this).getSelectionStart();
-  }
-  
-  jQuery.fn.setCursorPosition = function(position){
-    if(this.lengh == 0) return this;
-    return $(this).setSelection(position, position);
-  }
-  
-  jQuery.fn.getSelection = function(){
-    if(this.lengh == 0) return -1;
-    var s = $(this).getSelectionStart();
-    var e = $(this).getSelectionEnd();
-    return this[0].value.substring(s,e);
-  }
-  
-  jQuery.fn.getSelectionStart = function(){
-    if(this.lengh == 0) return -1;
-    input = this[0];
-    
-    var pos = input.value.length;
-    
-    if (input.createTextRange) {
-      var r = document.selection.createRange().duplicate();
-      r.moveEnd('character', input.value.length);
-      if (r.text == '') 
-        pos = input.value.length;
-      pos = input.value.lastIndexOf(r.text);
-    } else if(typeof(input.selectionStart)!="undefined")
-      pos = input.selectionStart;
-    
-    return pos;
-  }
-  
-  jQuery.fn.getSelectionEnd = function(){
-    if(this.lengh == 0) return -1;
-    input = this[0];
-    
-    var pos = input.value.length;
-    
-    if (input.createTextRange) {
-      var r = document.selection.createRange().duplicate();
-      r.moveStart('character', -input.value.length);
-      if (r.text == '') 
-        pos = input.value.length;
-      pos = input.value.lastIndexOf(r.text);
-    } else if(typeof(input.selectionEnd)!="undefined")
-      pos = input.selectionEnd;
-    
-    return pos;
-  }
-  
-  jQuery.fn.setSelection = function(selectionStart, selectionEnd) {
-    if(this.lengh == 0) return this;
-    input = this[0];
-    
-    if (input.createTextRange) {
-      var range = input.createTextRange();
-      range.collapse(true);
-      range.moveEnd('character', selectionEnd);
-      range.moveStart('character', selectionStart);
-      range.select();
-    } else if (input.setSelectionRange) {
-      input.focus();
-      input.setSelectionRange(selectionStart, selectionEnd);
-    }
-    
-    return this;
-  }
-})( jQuery );
