@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name          [Leek Wars] Inscription Tournois
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.3
-// @description   Ajout de l'autocomplétion pour les pseudos dans le tchat
+// @version       0.4
+// @description   Inscription aux tournois
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tournaments.user.js
