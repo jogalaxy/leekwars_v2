@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Team Management Enhancer
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.21
 // @description   Diminution de la taille des poireaux sur la page d'équipe et amélioration de la gestion de poireaux
 // @author        WhiteSlash
 // @projectPage   https://github.com/jogalaxy/leekwars_v2

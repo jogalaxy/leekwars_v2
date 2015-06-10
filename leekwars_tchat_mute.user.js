@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat mute
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.21
 // @description   Ajout de la fonctionnalité de mute sur le tchat. Ne fonctionne que sur le tchat normal.
 // @author        WhiteSlash
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
