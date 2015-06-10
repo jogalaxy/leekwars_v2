@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Fast Garden
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.3
 // @description   Permet de lancer plus rapidement ses combats
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -21,8 +21,9 @@
 	{
 		$(this).unbind("click");
 	});
-	$('body').on('click', '#garden-solo .leek.enemy', function()
+	$('body').on('click', '#garden-solo .leek.enemy', function(e)
 	{
+		e.stopPropagation();
 		submitFight("solo", {
 			leek_id: _myLeek,
 			target_id: $(this).attr('leek')
@@ -34,8 +35,9 @@
 	{
 		$(this).unbind("click");
 	});
-	$('body').on('click', '#garden-farmer .farmer.enemy', function()
+	$('body').on('click', '#garden-farmer .farmer.enemy', function(e)
 	{
+		e.stopPropagation();
 		submitFight("farmer", {
 			target_id: $(this).attr('id')
 		});
@@ -46,8 +48,9 @@
 	{
 		$(this).unbind("click");
 	});
-	$('body').on('click', '#garden-team .enemyCompo', function()
+	$('body').on('click', '#garden-team .enemyCompo', function(e)
 	{
+		e.stopPropagation();
 		submitFight("team", {
 			composition_id: _myCompo,
 			target_id: $(this).attr('id')
