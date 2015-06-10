@@ -8,7 +8,7 @@
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_team_management_enhancer.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_team_management_enhancer.user.js
 // @match         http://leekwars.com/*
-// @include       http://www.leekwars.com/*
+// @include       http://leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
