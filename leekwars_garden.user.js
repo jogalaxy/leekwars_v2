@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Fast Garden
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Permet de lancer plus rapidement ses combats
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -81,8 +81,8 @@
 				addHistory(type, params, fight_id);
 				waitlist.push(fight_id);
 				refreshResults();
-				refreshInterface();
 			}
+			refreshInterface();
 		});
 	}
 
