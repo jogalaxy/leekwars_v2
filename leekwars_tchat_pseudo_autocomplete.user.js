@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Pseudo Autocomplete
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.6
+// @version       0.7
 // @description   Ajout de l'autocomplétion pour les pseudos dans le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -41,21 +41,17 @@
 		if (autocompleteNames.length == 0 && currentName.length > 0)
 		{
 
-			/*for (var lang in LW.chat.messages)
+			$('.chat-messages').find('.chat-message .chat-message-author').each(function()
 			{
-				for (var message in LW.chat.messages[lang])
+				var name = $(this).text();
+				if (name.substr(0, currentName.length).toLowerCase() == currentName.toLowerCase())
 				{
-					var name = LW.chat.messages[lang][message][2];
-					if (name.substr(0, currentName.length).toLowerCase() == currentName.toLowerCase() && autocompleteNames.indexOf(name) == -1)
-						autocompleteNames.push(name);
-				}
-			}*/
-
-			$(chat).find('.chat-message .chat-message-author').each(function()
-			{
-				var name = $(this).text()
-				if (name.substr(0, currentName.length).toLowerCase() == currentName.toLowerCase() && autocompleteNames.indexOf(name) == -1)
+					if (autocompleteNames.indexOf(name) != -1)
+					{
+						autocompleteNames.splice(autocompleteNames.indexOf(name), 1);
+					}
 					autocompleteNames.push(name);
+				}
 			});
 
 			if (autocompleteNames.length > 0)
