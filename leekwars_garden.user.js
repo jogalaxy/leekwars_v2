@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Fast Garden
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.3
+// @version       0.4
 // @description   Permet de lancer plus rapidement ses combats
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -15,6 +15,8 @@
 {
 
 	var waitlist = [];
+
+	var loading = false;
 
 	// Click d'un adversaire
 	$('body').on('mouseup', '#garden-solo .leek.enemy', function()
@@ -76,17 +78,22 @@
 	// Lancement du combat
 	function submitFight(type, params)
 	{
-		_.post('garden/start-'+type+'-fight', params, function(data)
+		if (!loading)
 		{
-			if (data.success)
+			loading = true;
+
+			_.post('garden/start-'+type+'-fight', params, function(data)
 			{
-				var fight_id = data.fight;
-				addHistory(type, params, fight_id);
-				waitlist.push(fight_id);
-				refreshResults();
-			}
-			refreshInterface();
-		});
+				if (data.success)
+				{
+					var fight_id = data.fight;
+					addHistory(type, params, fight_id);
+					waitlist.push(fight_id);
+					refreshResults();
+				}
+				refreshInterface();
+			});
+		}
 	}
 
 	// Affichage de l'historique des combats
@@ -131,32 +138,34 @@
 	// Récupération du résultat des combats
 	function refreshResults()
 	{
-
-		for (var i = 0; i < waitlist.length; i++)
+		if (!loading)
 		{
-			var fight_id = waitlist[i];
-			var waitlist_i = i;
-			_.get('fight/get/' + fight_id, function(data)
+			for (var i = 0; i < waitlist.length; i++)
 			{
-				if (data.fight.status == 1)
+				var fight_id = waitlist[i];
+				var waitlist_i = i;
+				_.get('fight/get/' + fight_id, function(data)
 				{
-					var fight = $('#garden-page .fight-wrapper[fight='+fight_id+'] .fight');
-					fight.removeClass('generating');
-					switch (data.fight.winner)
+					if (!loading && data.fight.status == 1)
 					{
-						case 1:
-							fight.addClass('win');
-							break;
-						case 2:
-							fight.addClass('defeat');
-							break;
-						default:
-							fight.addClass('draw');
+						var fight = $('#garden-page .fight-wrapper[fight='+fight_id+'] .fight');
+						fight.removeClass('generating');
+						switch (data.fight.winner)
+						{
+							case 1:
+								fight.addClass('win');
+								break;
+							case 2:
+								fight.addClass('defeat');
+								break;
+							default:
+								fight.addClass('draw');
+						}
+						waitlist.splice(waitlist_i, 1);
+						waitlist_i--;
 					}
-					waitlist.splice(waitlist_i, 1);
-					waitlist_i--;
-				}
-			});
+				});
+			}
 		}
 
 		if (waitlist.length != 0)
@@ -165,6 +174,8 @@
 
 	function refreshInterface()
 	{
+
+		var scrollTop_value = $(window).scrollTop();
 
 		localStorage["garden/leek"] = $('#garden-solo .myleek.selected').attr('leek');
 		localStorage["garden/compo"] = $('#garden-team .myCompo.selected').attr('id');
@@ -175,7 +186,6 @@
 			fight_history.push({
 				type : $(this).attr('type'),
 				id : $(this).attr('element_id'),
-				visible : $(this).is(":visible"),
 				content : $(this).html()
 			});
 		});
@@ -186,10 +196,34 @@
 			{
 				var history = fight_history[i];
 				$('#garden-'+history.type).append('<div class="fight-history" type="'+history.type+'" element_id="'+history.id+'"></div>');
-				if (!history.visible)
+				if (!(history.type == "solo" && history.id == localStorage["garden/leek"]) && !(history.type == "farmer") && !(history.type == "team" && history.id == localStorage["garden/compo"]))
 					$('#garden-'+history.type+' .fight-history[element_id='+history.id+']').hide();
 				$('#garden-'+history.type+' .fight-history[element_id='+history.id+']').html(history.content);
 			}
+
+			var intervalRefresh = setInterval(function()
+			{
+				$(window).scrollTop(scrollTop_value);
+				if ($(window).scrollTop() == scrollTop_value)
+					clearInterval(intervalRefresh);
+			}, 1);
+
+			setTimeout(function()
+			{
+				clearInterval(intervalRefresh);
+			}, 100);
+
+			loading = false;
+			waitlist = [];
+
+			$('#garden-page .fight-wrapper').each(function()
+			{
+				if ($(this).children('.generating').length)
+					waitlist.push($(this).attr('fight'));
+			});
+
+			refreshResults();
+
 		});
 
 		LW.loadPage('garden');
