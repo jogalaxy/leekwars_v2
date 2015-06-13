@@ -32,11 +32,11 @@
 				this.onmessage_back(msg);
 				$('.notification').css('background-color','');
 				var c = $('.notifications-counter').first().contents().text();
-				$('.notification').slice(0, c).css('background-color','#99ffaa');
+				$('.notification').slice(0, c).css('background-color','#d0ffd8');
 			}
 
 			var c = $('.notifications-counter').first().contents().text();
-			$('.notification').slice(0, c).css('background-color','#99ffaa');
+			$('.notification').slice(0, c).css('background-color','#d0ffd8');
 			
 			clearInterval(init_interval);
 		}
