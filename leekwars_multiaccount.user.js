@@ -23,7 +23,7 @@ function leekwars_multiaccount(){
 		WS.addOptions('leekwars_multiaccount', {
 			'title' : '[UserScript] Multi-compte',
 			'fields' : [
-				{'name':'multiaccount-accounts', 'label':'Liste des comptes', 'type':'textarea','hint':'Au format suivant : {"pseudo":"mdp1","pseudo2":"mdp2"} (sans espace)<br/><br/>Il faudra faire un petit F5 pour que le menu se mette en haut à droite au survol de votre avatar/pseudo.'}
+				{'name':'multiaccount-accounts', 'label':'Liste des comptes', 'type':'textarea','secret':true,'hint':'Au format suivant : {"pseudo":"mdp1","pseudo2":"mdp2"} (sans espace)<br/><br/>Il faudra faire un petit F5 pour que le menu se mette en haut à droite au survol de votre avatar/pseudo.'}
 			]
 		});
 

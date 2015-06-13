@@ -65,8 +65,10 @@
 
 					var hintTmp = field.hint;
 					if(field.type == 'textarea'){
-						blocOptions += '<textarea  class="ws-options-input" name="'+field.name+'" style="width:100%;height:50px;margin-top:15px;">'
+						blocOptions += '<textarea id="input-'+field.name+'" class="ws-options-input" name="'+field.name+'" style="width:100%;height:50px;margin-top:15px;'+(field.secret?'display:none;':'')+'">'
 							+JSON.stringify(WS.getOption(field.name))+'</textarea>';
+                        if(field.secret)
+                            blocOptions += '<div class="button ws-options-secret" data-id-input="input-'+field.name+'">Afficher le bloc de configuration</div>';
 						hintTmp += (field.hint.length>0?"<br/><br/>":"")+"<small>Il suffit de cliquer en dehors du cadre pour enregistrer l'option</small>";
 					}
 					else{
@@ -83,6 +85,11 @@
 				WS.setOption($(this).attr('name'), JSON.parse($(this).val()));
 				_.toast("L'option \"" + $('#'+$(this).attr('name')).text() + '" a été mise à jour !');
 			});
+			 $('.ws-options-secret').bind('click touch', function(){
+                console.log($('#'+$(this).attr('data-id-input')));
+                $('#'+$(this).attr('data-id-input')).show();
+                $(this).remove();
+            });
 		}
 		WS.require('settings.v2.js', function(){
 			var defaultAdvanced = LW.pages.settings.advanced;
