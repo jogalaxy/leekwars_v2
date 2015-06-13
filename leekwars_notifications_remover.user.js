@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name          [Leek Wars] Notifications Remover
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Permet de supprimer la bulle des notifications
-// @author        Rominou & jojo123
+// @author        Rominou & jojo123 & Keorl
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_notifications_remover.user.js
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_notifications_remover.user.js
@@ -19,6 +19,21 @@
 	$("body").on("click", "#notifications .label", function()
 	{
 		_.post("notification/read-all", {});
+		$('.notification').css('background-color','');
+	});
+
+	LW.on('pageload', function()
+	{
+		LW.socket.socket.onmessage_back = LW.socket.socket.onmessage;
+		LW.socket.socket.onmessage = function(msg)
+		{
+			this.onmessage_back(msg);
+			var c = $('.notifications-counter').first().contents().text();
+			$('.notification').slice(0, c).css('background-color','#99ffaa');
+		}
+
+		var c = $('.notifications-counter').first().contents().text();
+		$('.notification').slice(0, c).css('background-color','#99ffaa');
 	});
 
 })();
