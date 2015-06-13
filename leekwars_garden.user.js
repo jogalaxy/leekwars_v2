@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Fast Garden
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.5
+// @version       0.6
 // @description   Permet de lancer plus rapidement ses combats
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -15,6 +15,8 @@
 {
 
 	var loading = false;
+
+	var request_counter = 0;
 
 	// Click d'un adversaire
 	$('body').on('mouseup', '#garden-solo .leek.enemy', function()
@@ -146,25 +148,30 @@
 
 			for (var i = 0; i < waitlist.length; i++)
 			{
-				_.get('fight/get/' + waitlist[i], function(data)
+				if (request_counter < 50)
 				{
-					if (!loading && data.success && data.fight.status == 1)
+					request_counter++;
+					_.get('fight/get/' + waitlist[i], function(data)
 					{
-						var fight = $('#garden-page .fight-wrapper[fight='+data.fight.id+'] .fight');
-						fight.removeClass('generating');
-						switch (data.fight.winner)
+						request_counter--;
+						if (!loading && data.success && data.fight.status == 1)
 						{
-							case 1:
-								fight.addClass('win');
-								break;
-							case 2:
-								fight.addClass('defeat');
-								break;
-							default:
-								fight.addClass('draw');
+							var fight = $('#garden-page .fight-wrapper[fight='+data.fight.id+'] .fight');
+							fight.removeClass('generating');
+							switch (data.fight.winner)
+							{
+								case 1:
+									fight.addClass('win');
+									break;
+								case 2:
+									fight.addClass('defeat');
+									break;
+								default:
+									fight.addClass('draw');
+							}
 						}
-					}
-				});
+					});
+				}
 			}
 		}
 	}
