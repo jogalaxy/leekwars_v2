@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Notifications Remover
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.3
+// @version       0.4
 // @description   Permet de supprimer la bulle des notifications
 // @author        Rominou & jojo123 & Keorl
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -22,19 +22,24 @@
 		$('.notification').css('background-color','');
 	});
 
-	LW.on('pageload', function()
+	var init_interval = setInterval(function()
 	{
-		LW.socket.socket.onmessage_back = LW.socket.socket.onmessage;
-		LW.socket.socket.onmessage = function(msg)
+		if (LW.socket.socket !== undefined && $('.notifications-counter').length)
 		{
-			this.onmessage_back(msg);
-			$('.notification').css('background-color','');
+			LW.socket.socket.onmessage_back = LW.socket.socket.onmessage;
+			LW.socket.socket.onmessage = function(msg)
+			{
+				this.onmessage_back(msg);
+				$('.notification').css('background-color','');
+				var c = $('.notifications-counter').first().contents().text();
+				$('.notification').slice(0, c).css('background-color','#99ffaa');
+			}
+
 			var c = $('.notifications-counter').first().contents().text();
 			$('.notification').slice(0, c).css('background-color','#99ffaa');
+			
+			clearInterval(init_interval);
 		}
-
-		var c = $('.notifications-counter').first().contents().text();
-		$('.notification').slice(0, c).css('background-color','#99ffaa');
-	});
+	}, 200);
 
 })();
