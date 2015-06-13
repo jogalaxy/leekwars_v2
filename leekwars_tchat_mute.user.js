@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat mute
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2.1
+// @version       0.2.2
 // @description   Ajout de la fonctionnalité de mute sur le tchat. Ne fonctionne que sur le tchat normal.
 // @author        WhiteSlash
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -13,31 +13,9 @@
 // ==/UserScript==
 
 function leekwars_tchat_mute(){
-	//don't mind that
-	var require = function(files, callback){
-		var count = 0;
-		var loaded = 0;
-		var callEnded = false;
-		function countLoadedFiles(){
-			loaded++;
-			if(callEnded && loaded == count){
-				console.log('We loaded everything, '+loaded+'/'+count+', sir.');
-				if(typeof callback === "function")
-					callback();
-			}
-		}
-		if(typeof files !== 'object')
-			files = [files];
-		for(var i in files){
-			count++;
-			_.script.load(LW.staticURL + '/script/', files[i] , countLoadedFiles);
-		}
-		callEnded = true;
-	}
-
-	//ONLY STARTING HERE
+	
 	$(function(){
-		require('forum.v2.js', function(){
+		WS.require('forum.v2.js', function(){
 			var aMuted = {};
 			var useLocalStorage = true;
 			try {
@@ -146,7 +124,26 @@ function leekwars_tchat_mute(){
 	});
 }
 
-var script = document.createElement('script'); 
-script.type = 'text/javascript'; 
-script.innerHTML = ""+leekwars_tchat_mute+"leekwars_tchat_mute();";//lol
-document.getElementsByTagName('head')[0].appendChild(script);
+
+function injectMe(){
+	//ajout de ce userscript dans la page
+	var script = document.createElement('script'); 
+	script.type = 'text/javascript'; 
+	script.innerHTML = ""+leekwars_tchat_mute+"leekwars_tchat_mute();";//lol
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+
+//Ajout dépendance avec mon utilitaire de scripts
+if(typeof WS === "undefined"){
+	var script = document.createElement('script'); 
+	script.type = 'text/javascript'; 
+	script.src="https://rawgit.com/jogalaxy/leekwars_v2/master/ws_lib.user.js";
+	script.onload = function(){
+		injectMe();
+	}
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
+else{
+	injectMe();
+}
