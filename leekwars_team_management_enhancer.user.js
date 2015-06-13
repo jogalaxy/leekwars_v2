@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Team Management Enhancer
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2.1
+// @version       0.2.2
 // @description   Diminution de la taille des poireaux sur la page d'équipe et amélioration de la gestion de poireaux
 // @author        WhiteSlash
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -14,31 +14,9 @@
 
 
 function leekwars_team_management_enhancer(){
-	//don't mind that
-	var require = function(files, callback){
-		var count = 0;
-		var loaded = 0;
-		var callEnded = false;
-		function countLoadedFiles(){
-			loaded++;
-			if(callEnded && loaded == count){
-				console.log('We loaded everything, '+loaded+'/'+count+', sir.');
-				if(typeof callback === "function")
-					callback();
-			}
-		}
-		if(typeof files !== 'object')
-			files = [files];
-		for(var i in files){
-			count++;
-			_.script.load(LW.staticURL + '/script/', files[i] , countLoadedFiles);
-		}
-		callEnded = true;
-	}
-
-	//ONLY STARTING HERE
+	
 	$(function(){
-		require('team.v2.js', function(){
+		WS.require('team.v2.js', function(){
 			//on se greffe comme un sale à la fin de la fonction tournaments qui est la dernière appelée sur la page
 			//donc on est sûr d'avoir tout le HTML
 			var defaultFunction = LW.pages.team.tournaments;
@@ -86,7 +64,26 @@ function leekwars_team_management_enhancer(){
 	});
 }
 
-var script = document.createElement('script'); 
-script.type = 'text/javascript'; 
-script.innerHTML = ""+leekwars_team_management_enhancer+"leekwars_team_management_enhancer();";//lol
-document.getElementsByTagName('head')[0].appendChild(script);
+
+function injectMe(){
+	//ajout de ce userscript dans la page
+	var script = document.createElement('script'); 
+	script.type = 'text/javascript'; 
+	script.innerHTML = ""+leekwars_team_management_enhancer+"leekwars_team_management_enhancer();";//lol
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+
+//Ajout dépendance avec mon utilitaire de scripts
+if(typeof WS === "undefined"){
+	var script = document.createElement('script'); 
+	script.type = 'text/javascript'; 
+	script.src="https://rawgit.com/jogalaxy/leekwars_v2/master/ws_lib.user.js";
+	script.onload = function(){
+		injectMe();
+	}
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
+else{
+	injectMe();
+}
