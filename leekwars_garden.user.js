@@ -150,7 +150,6 @@
 				{
 					if (!loading && data.success && data.fight.status == 1)
 					{
-						console.log("fight", data.fight.id, data);
 						var fight = $('#garden-page .fight-wrapper[fight='+data.fight.id+'] .fight');
 						fight.removeClass('generating');
 						switch (data.fight.winner)
