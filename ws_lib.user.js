@@ -63,15 +63,16 @@
 					var field = datas.fields[i];
 					blocOptions += '<h4 id="'+field.name+'">'+field.label+'</h4>';
 
+					var hintTmp = field.hint;
 					if(field.type == 'textarea'){
 						blocOptions += '<textarea  class="ws-options-input" name="'+field.name+'" style="width:100%;height:50px;margin-top:15px;">'
 							+JSON.stringify(WS.getOption(field.name))+'</textarea>';
-						field.hint += "<br/><br/><small>Il suffit de cliquer en dehors du cadre pour enregistrer l'option</small>";
+						hintTmp += (field.hint.length>0?"<br/><br/>":"")+"<small>Il suffit de cliquer en dehors du cadre pour enregistrer l'option</small>";
 					}
 					else{
 						blocOptions += '<p>Pas encore dev les autres types de input!</p>';
 					}
-					blocOptions += '<p>'+field.hint+'</p>';
+					blocOptions += '<p>'+hintTmp+'</p>';
 				}
 
 				blocOptions += '</div></div></div>';
