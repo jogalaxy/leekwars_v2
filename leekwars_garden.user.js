@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Fast Garden
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.4
+// @version       0.5
 // @description   Permet de lancer plus rapidement ses combats
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -13,8 +13,6 @@
 
 (function()
 {
-
-	var waitlist = [];
 
 	var loading = false;
 
@@ -88,8 +86,6 @@
 				{
 					var fight_id = data.fight;
 					addHistory(type, params, fight_id);
-					waitlist.push(fight_id);
-					refreshResults();
 				}
 				refreshInterface();
 			});
@@ -140,15 +136,22 @@
 	{
 		if (!loading)
 		{
+			var waitlist = [];
+
+			$('#garden-page .fight-wrapper').each(function()
+			{
+				if ($(this).children('.generating').length)
+					waitlist.push($(this).attr('fight'));
+			});
+
 			for (var i = 0; i < waitlist.length; i++)
 			{
-				var fight_id = waitlist[i];
-				var waitlist_i = i;
-				_.get('fight/get/' + fight_id, function(data)
+				_.get('fight/get/' + waitlist[i], function(data)
 				{
-					if (!loading && data.fight.status == 1)
+					if (!loading && data.success && data.fight.status == 1)
 					{
-						var fight = $('#garden-page .fight-wrapper[fight='+fight_id+'] .fight');
+						console.log("fight", data.fight.id, data);
+						var fight = $('#garden-page .fight-wrapper[fight='+data.fight.id+'] .fight');
 						fight.removeClass('generating');
 						switch (data.fight.winner)
 						{
@@ -161,16 +164,13 @@
 							default:
 								fight.addClass('draw');
 						}
-						waitlist.splice(waitlist_i, 1);
-						waitlist_i--;
 					}
 				});
 			}
 		}
-
-		if (waitlist.length != 0)
-			setTimeout(refreshResults, 1000);
 	}
+
+	setInterval(refreshResults, 1000);
 
 	function refreshInterface()
 	{
@@ -214,15 +214,6 @@
 			}, 100);
 
 			loading = false;
-			waitlist = [];
-
-			$('#garden-page .fight-wrapper').each(function()
-			{
-				if ($(this).children('.generating').length)
-					waitlist.push($(this).attr('fight'));
-			});
-
-			refreshResults();
 
 		});
 
