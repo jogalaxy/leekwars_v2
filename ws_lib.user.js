@@ -56,7 +56,7 @@
 			for(var script in WS.optionList){
 				var datas = WS.optionList[script];
 				blocOptions += '<div class="column6">'
-				+ '<div class="panel first"><div class="header"><h2>'+datas.title+'</h2></div>'
+				+ '<div class="panel"><div class="header"><h2>'+datas.title+'</h2></div>'
 				+ '<div class="content"><div id="'+script+'">'
 				//On ajoute les inputs
 				for(var i = 0 ; i < datas.fields.length; i++){
@@ -77,7 +77,7 @@
 					blocOptions += '<p>'+hintTmp+'</p>';
 				}
 
-				blocOptions += '</div></div></div>';
+				blocOptions += '</div></div></div></div>';
 			}
 			blocOptions += '</div>';
 			$('.advanced-button').parent().before(blocOptions);
