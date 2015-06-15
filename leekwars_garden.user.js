@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Fast Garden
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.6
+// @version       0.7
 // @description   Permet de lancer plus rapidement ses combats
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -178,6 +178,8 @@
 
 	setInterval(refreshResults, 1000);
 
+	var fight_history = [];
+
 	function refreshInterface()
 	{
 
@@ -186,7 +188,7 @@
 		localStorage["garden/leek"] = $('#garden-solo .myleek.selected').attr('leek');
 		localStorage["garden/compo"] = $('#garden-team .myCompo.selected').attr('id');
 
-		var fight_history = [];
+		fight_history = [];
 		$('#garden-page .fight-history').each(function()
 		{
 			fight_history.push({
@@ -196,7 +198,13 @@
 			});
 		});
 
-		LW.on('pageload', function()
+		LW.loadPage('garden');
+
+	}
+
+	LW.on('pageload', function()
+	{
+		if (LW.currentPage == "garden")
 		{
 			for (var i = 0; i < fight_history.length; i++)
 			{
@@ -220,11 +228,7 @@
 			}, 100);
 
 			loading = false;
-
-		});
-
-		LW.loadPage('garden');
-
-	}
+		}
+	});
 
 })();
