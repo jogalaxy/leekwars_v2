@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Notifications Remover
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.4
+// @version       0.5
 // @description   Permet de supprimer la bulle des notifications
 // @author        Rominou & jojo123 & Keorl
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -19,7 +19,15 @@
 	$("body").on("click", "#notifications .label", function()
 	{
 		_.post("notification/read-all", {});
+		LW.notifications.unread = 0;
+		LW.updateCounters();
 		$('.notification').css('background-color','');
+	});
+
+	LW.on('pageload', function()
+	{
+		var c = $('.notifications-counter').first().contents().text();
+		$('.notification').slice(0, c).css('background-color','#99ffaa');
 	});
 
 	var init_interval = setInterval(function()
