@@ -1,11 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Notifications Remover
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-<<<<<<< HEAD
 // @version       0.5
-=======
-// @version       0.4.1
->>>>>>> e41cdcc47fdeadc5fd1acd09f927fc0ca48a4aac
 // @description   Permet de supprimer la bulle des notifications
 // @author        Rominou & jojo123 & Keorl
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
