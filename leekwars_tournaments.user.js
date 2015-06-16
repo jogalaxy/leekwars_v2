@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Inscription Tournois
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.4
+// @version       0.5
 // @description   Inscription aux tournois
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -11,9 +11,8 @@
 // @grant         none
 // ==/UserScript==
 
-LW.on('pageload', function()
+LW.on('initialized', function()
 {
-	console.log(LW.farmer.leeks);
 	_.post('farmer/register-tournament')
 	for (var leek_id in LW.farmer.leeks)
 	{
