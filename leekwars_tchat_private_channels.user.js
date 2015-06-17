@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Private Channel
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1.4
+// @version       0.2
 // @description   Permet d'ajouter des canaux privés
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -11,26 +11,10 @@
 // @grant         none
 // ==/UserScript==
 
-/*
-- Corrections des bugs
-- Ajout des commandes :
-	/createChannel <channel_name> (modérateur seulement)
-	/deleteChannel <channel_name> (modérateur seulement)
-	/createChannel <channel_name> <mdp> (modérateur seulement)
-	/deleteChannel <channel_name> (modérateur seulement)
-	/join <channel_name>
-	/join <channel_name> <mdp>
-	/leave
-	/listChannels
-	/connected
-	/connected <channel_name>
-	/allConnected
-	/reboot (administrateur seulement)
-*/
-
 var socket = null;
 var load = false;
 var channels = [];
+var scrollTop_value = -1;
 
 (function()
 {
@@ -46,6 +30,14 @@ var channels = [];
 		name: "Deutsch",
 		flag: "image/flag/32/de.png"
 	});
+
+	if (localStorage['private-chat/channel'] === undefined)
+		localStorage['private-chat/channel'] = JSON.stringify([]);
+
+	var localStorage_channels = JSON.parse(localStorage['private-chat/channel']);
+
+	for (var i in localStorage_channels)
+		addChannel(localStorage_channels[i]);
 
 	var script = document.createElement('script'); 
 	script.type = 'text/javascript'; 
@@ -100,7 +92,7 @@ var channels = [];
 				{
 					for (var channel in channels)
 					{
-						socket.emit('addChannel', channels[channel].code);
+						socket.emit('addChannel', channels[channel]);
 					}
 				}
 			});
@@ -131,31 +123,71 @@ var channels = [];
 
 			});
 
+			socket.on('join', function(channel)
+			{
+				addChannel(channel);
+				scrollTop_value = $(window).scrollTop();
+				LW.loadPage(LW.currentPage);
+				localStorage['chat/channel'] = channel.code;
+				localStorage_channels = JSON.parse(localStorage['private-chat/channel']);
+				localStorage_channels.push(channel);
+				localStorage['private-chat/channel'] = JSON.stringify(localStorage_channels);
+			});
+
+			socket.on('leave', function(channel_code)
+			{
+				removeChannel(channel_code);
+				scrollTop_value = $(window).scrollTop();
+				LW.loadPage(LW.currentPage);
+				localStorage['chat/channel'] = "fr";
+			});
+
 			LW_socket_send = LW.socket.send;
 			LW.socket.send = function(request)
 			{
-				if (request[0] == FORUM_CHAT_ENABLE && request[1] == "es")
-					socket.emit('addChannel', 'es');
-				else if (request[0] == FORUM_CHAT_ENABLE && request[1] == "de")
-					socket.emit('addChannel', 'de');
-				else if (request[0] == FORUM_CHAT_DISABLE && request[1] == "es")
-					socket.emit('removeChannel', 'es');
-				else if (request[0] == FORUM_CHAT_DISABLE && request[1] == "de")
-					socket.emit('removeChannel', 'de');
-				else if (request[0] == FORUM_CHAT_SEND && request[2].substring(0, 4) == "/fr ")
-					LW_socket_send(request);
-				else if (request[0] == FORUM_CHAT_SEND && request[2].substring(0, 4) == "/en ")
-					LW_socket_send(request);
-				else if (request[0] == FORUM_CHAT_SEND && request[2].substring(0, 4) == "/es ")
-					sendMessage("es", request[2].substring(4));
-				else if (request[0] == FORUM_CHAT_SEND && request[2].substring(0, 4) == "/de ")
-					sendMessage("de", request[2].substring(4));
-				else if (request[0] == FORUM_CHAT_SEND && request[1] == "es")
-					sendMessage("es", request[2]);
-				else if (request[0] == FORUM_CHAT_SEND && request[1] == "de")
-					sendMessage("de", request[2]);
-				else
-					LW_socket_send(request);
+				var success = false;
+
+				if (request[0] == FORUM_CHAT_ENABLE && ["fr", "en"].indexOf(request[1]) == -1)
+				{
+					socket.emit('addChannel', request[1]);
+					success = true;
+				}
+
+				if (request[0] == FORUM_CHAT_DISABLE && ["fr", "en"].indexOf(request[1]) == -1)
+				{
+					socket.emit('removeChannel', request[1]);
+					success = true;
+				}
+
+				if (request[0] == FORUM_CHAT_SEND)
+				{
+					if (["fr", "en"].indexOf(request[2]) != -1)
+						return LW_socket_send(request);
+
+					if (["/fr ", "/en "].indexOf(request[2].substring(0, 4)) != -1)
+						return LW_socket_send(request);
+
+					if (request[2].substring(0, 4) == "/es ")
+					{
+						sendMessage("es", request[2].substring(4));
+						success = true;
+					}
+					else if (request[2].substring(0, 4) == "/de ")
+					{
+						sendMessage("de", request[2].substring(4));
+						success = true;
+					}
+					else if (channels.indexOf(request[1]) != -1)
+					{
+						sendMessage(request[1], request[2]);
+						success = true;
+					}
+				}
+
+				if (!success)
+				{
+					return LW_socket_send(request);
+				}
 			}
 		}
 
@@ -193,9 +225,35 @@ var channels = [];
 	function addChannel(channel)
 	{
 		_.lang.languages[channel.code] = channel;
-		channels.push(channel);
+		channels.push(channel.code);
 	}
 
+	function removeChannel(channel_code)
+	{
+		delete _.lang.languages[channel_code];
+		delete channels[channels.indexOf(channel_code)];
+
+		localStorage_channels = JSON.parse(localStorage['private-chat/channel']);
+
+		for (var i in localStorage_channels)
+		{
+			if (localStorage_channels[i].code == channel_code)
+				delete localStorage_channels[i];
+		}
+
+		localStorage['private-chat/channel'] = JSON.stringify(localStorage_channels);
+	}
+
+	LW.on('pageload', function()
+	{
+		if (LW.currentPage == "forum")
+		{
+			if (scrollTop_value != -1)
+			{
+				$(window).scrollTop(scrollTop_value);
+				scrollTop_value = -1;
+			}
+		}
+	});
 
 })();
-
