@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Private Channel
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1.3
+// @version       0.1.4
 // @description   Permet d'ajouter des canaux privés
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -134,7 +134,15 @@ var channels = [];
 			LW_socket_send = LW.socket.send;
 			LW.socket.send = function(request)
 			{
-				if (request[0] == FORUM_CHAT_SEND && request[2].substring(0, 4) == "/fr ")
+				if (request[0] == FORUM_CHAT_ENABLE && request[1] == "es")
+					socket.emit('addChannel', 'es');
+				else if (request[0] == FORUM_CHAT_ENABLE && request[1] == "de")
+					socket.emit('addChannel', 'de');
+				else if (request[0] == FORUM_CHAT_DISABLE && request[1] == "es")
+					socket.emit('removeChannel', 'es');
+				else if (request[0] == FORUM_CHAT_DISABLE && request[1] == "de")
+					socket.emit('removeChannel', 'de');
+				else if (request[0] == FORUM_CHAT_SEND && request[2].substring(0, 4) == "/fr ")
 					LW_socket_send(request);
 				else if (request[0] == FORUM_CHAT_SEND && request[2].substring(0, 4) == "/en ")
 					LW_socket_send(request);
