@@ -37,7 +37,8 @@ var scrollTop_value = -1;
 	var localStorage_channels = JSON.parse(localStorage['private-chat/channel']);
 
 	for (var i in localStorage_channels)
-		addChannel(localStorage_channels[i]);
+		if (localStorage_channels[i] != undefined)
+			addChannel(localStorage_channels[i]);
 
 	var script = document.createElement('script'); 
 	script.type = 'text/javascript'; 
@@ -237,7 +238,7 @@ var scrollTop_value = -1;
 
 		for (var i in localStorage_channels)
 		{
-			if (localStorage_channels[i].code == channel_code)
+			if (localStorage_channels[i] != undefined && localStorage_channels[i].code == channel_code)
 				delete localStorage_channels[i];
 		}
 
