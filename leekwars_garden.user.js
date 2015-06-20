@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Fast Garden
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.8
+// @version       0.9
 // @description   Permet de lancer plus rapidement ses combats
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -17,6 +17,8 @@
 	var loading = false;
 
 	var request_counter = 0;
+
+	var scrollTop_value = $(window).scrollTop();
 
 	// Click d'un adversaire
 	$('body').on('mouseup', '#garden-solo .leek.enemy', function()
@@ -182,8 +184,7 @@
 
 	function refreshInterface()
 	{
-
-		var scrollTop_value = $(window).scrollTop();
+		scrollTop_value = $(window).scrollTop();
 
 		localStorage["garden/leek"] = $('#garden-solo .myleek.selected').attr('leek');
 		localStorage["garden/compo"] = $('#garden-team .myCompo.selected').attr('id');
