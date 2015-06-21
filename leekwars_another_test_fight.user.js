@@ -14,7 +14,7 @@
 (function()
 {
 
-	$('body').on('mouseup', '.test_popup #launch', saveTestSettings);
+	$('body').on('mouseup', '.test_popup #launch', saveTestSettings)
 	$('body').on('click', '#refight_test', refight_test)
 
 	LW.on('pageload', function()
@@ -27,7 +27,7 @@
 
 	function saveTestSettings()
 	{
-		_saveTestSettings();
+		_saveTestSettings()
 	}
 
 	function refight_test()
