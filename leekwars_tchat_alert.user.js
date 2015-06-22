@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Alert
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.5
+// @version       0.6
 // @description   Alerte l'utilisateur quand un tag personnalisé est rentré sur le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -35,6 +35,11 @@ LW.on('pageload', function()
 		$('#tchat_alert_1').val(tchat_alert_1.join(";"));
 		$('#tchat_alert_2').val(tchat_alert_2.join(";"));
 		$('#tchat_alert_3').val(tchat_alert_3.join(";"));
+	}
+
+	if (LW.currentPage == 'forum')
+	{
+		alert_1();
 	}
 
 });
