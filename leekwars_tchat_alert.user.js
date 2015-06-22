@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Alert
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.3
+// @version       0.4
 // @description   Alerte l'utilisateur quand un tag personnalisé est rentré sur le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -33,7 +33,7 @@
 
 		if (LW.currentPage == 'settings')
 		{
-			$('#settings-page .flex-container').append('<div class="column6"><div class="panel"><div class="header"><h2>Notifications sur le tchat - Tags</h2></div><div class="content"><div style="text-align: left">Veuillez entrer la liste des tags (séparés par un point-virgule) pour chaque type de notification<br>Exemple : Pilow;salut</div><br><h4>Message en rouge</h4><input type="text" id="tchat_alert_1"><br><h4>Notifications dans le jeu</h4><input type="text" id="tchat_alert_2"><br><h4>Notifications sur le système</h4><input type="text" id="tchat_alert_3"><br><br><center><input type="submit" class="button green" value="Appliquer" id="tchat_alert_apply"></center></div></div></div>');
+			$('#settings-page .flex-container').first().append('<div class="column6"><div class="panel"><div class="header"><h2>Notifications sur le tchat - Tags</h2></div><div class="content"><div style="text-align: left">Veuillez entrer la liste des tags (séparés par un point-virgule) pour chaque type de notification<br>Exemple : Pilow;salut</div><br><h4>Message en rouge</h4><input type="text" id="tchat_alert_1"><br><h4>Notifications dans le jeu</h4><input type="text" id="tchat_alert_2"><br><h4>Notifications sur le système</h4><input type="text" id="tchat_alert_3"><br><br><center><input type="submit" class="button green" value="Appliquer" id="tchat_alert_apply"></center></div></div></div>');
 			$('#tchat_alert_1').val(tchat_alert_1.join(";"));
 			$('#tchat_alert_2').val(tchat_alert_2.join(";"));
 			$('#tchat_alert_3').val(tchat_alert_3.join(";"));
