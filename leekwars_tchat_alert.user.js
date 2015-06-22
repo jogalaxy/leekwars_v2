@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Alert
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.3
 // @description   Alerte l'utilisateur quand un tag personnalisé est rentré sur le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -62,26 +62,28 @@
 		{
 			this.onmessage_back_tchat_alert(msg);
 			var _msg = JSON.parse(msg.data);
-			if (_msg[0] == FORUM_CHAT_RECEIVE && _msg[1][1] != LW.farmer.id)
+			if (_msg[0] == FORUM_CHAT_RECEIVE)
 			{
-				var message = _msg[1][3];
+				if (_msg[1][1] != LW.farmer.id)
+				{
+					var message = _msg[1][3];
 
-				var tchat_alert_2_find = false;
-				var tchat_alert_3_find = false;
+					var tchat_alert_2_find = false;
+					var tchat_alert_3_find = false;
 
-				for (var i in tchat_alert_2)
-					if (tchat_alert_2[i] != '' && message.search(tchat_alert_2[i]) != -1)
-						tchat_alert_2_find = true;
-				for (var i in tchat_alert_3)
-					if (tchat_alert_3[i] != '' && message.search(tchat_alert_3[i]) != -1)
-						tchat_alert_3_find = true;
+					for (var i in tchat_alert_2)
+						if (tchat_alert_2[i] != '' && message.toLowerCase().search(tchat_alert_2[i].toLowerCase()) != -1)
+							tchat_alert_2_find = true;
+					for (var i in tchat_alert_3)
+						if (tchat_alert_3[i] != '' && message.toLowerCase().search(tchat_alert_3[i].toLowerCase()) != -1)
+							tchat_alert_3_find = true;
 
-				if (tchat_alert_2_find && _msg[1][4] > n)
-					alert_2(_msg[1]);
+					if (tchat_alert_2_find && _msg[1][4] > n)
+						alert_2(_msg[1]);
 
-				if (tchat_alert_3_find && _msg[1][4] > n)
-					alert_3(_msg[1]);
-
+					if (tchat_alert_3_find && _msg[1][4] > n)
+						alert_3(_msg[1]);
+				}
 				alert_1();
 			}
 		}
@@ -97,7 +99,7 @@
 			var message = $(this).text();
 			for (var i in tchat_alert_1)
 			{
-				if (tchat_alert_1[i] != '' && message.search(tchat_alert_1[i]) != -1)
+				if (tchat_alert_1[i] != '' && message.toLowerCase().search(tchat_alert_1[i].toLowerCase()) != -1)
 				{
 					$(this).css('color', '#e74c3c');
 					$(this).css('font-weight', 'bold');
