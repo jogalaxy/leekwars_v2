@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Alert
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Alerte l'utilisateur quand un tag personnalisé est rentré sur le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -62,7 +62,7 @@
 		{
 			this.onmessage_back_tchat_alert(msg);
 			var _msg = JSON.parse(msg.data);
-			if (_msg[0] == FORUM_CHAT_RECEIVE)
+			if (_msg[0] == FORUM_CHAT_RECEIVE && _msg[1][1] != LW.farmer.id)
 			{
 				var message = _msg[1][3];
 
