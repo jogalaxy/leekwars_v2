@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Pseudo Autocomplete
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.7
+// @version       0.8
 // @description   Ajout de l'autocomplétion pour les pseudos dans le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -16,7 +16,7 @@
 
 	var autocompleteNames = [];
 
-	function autocompleteChat(_chat)
+	function autocompleteChat(_chat, _parent)
 	{
 
 		var startNamePos = getSelectionStart(_chat);
@@ -41,7 +41,7 @@
 		if (autocompleteNames.length == 0 && currentName.length > 0)
 		{
 
-			$('.chat-messages').find('.chat-message .chat-message-author').each(function()
+			_parent.find('.chat-message .chat-message-author').each(function()
 			{
 				var name = $(this).text();
 				if (name.substr(0, currentName.length).toLowerCase() == currentName.toLowerCase())
@@ -91,7 +91,7 @@
 		if (e.keyCode === 9)
 		{
 			e.preventDefault();
-			autocompleteChat($('#social-panel .chat-input'));
+			autocompleteChat($('#social-panel .chat-input'), $('.chat-messages'));
 		}
 		else
 		{
@@ -104,7 +104,20 @@
 		if (e.keyCode === 9)
 		{
 			e.preventDefault();
-			autocompleteChat($('#chat-input'));
+			autocompleteChat($('#chat-input'), $('.chat-messages'));
+		}
+		else
+		{
+			autocompleteNames = [];
+		}
+	});
+
+	$(document).on('keydown', '#team-chat-input', function(e)
+	{
+		if (e.keyCode === 9)
+		{
+			e.preventDefault();
+			autocompleteChat($('#team-chat-input'), $('#team-chat-messages'));
 		}
 		else
 		{
