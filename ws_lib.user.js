@@ -14,10 +14,10 @@
 
 // Patch
 
-if (_.script.loading === undefined)
-	_.script.loading = {}
-
 _.script.load = function(path, file, callback) {
+
+	if (_.script.loading === undefined)
+		_.script.loading = {}
 
 	if ((path + file) in _.script.loaded) {
 		callback()
