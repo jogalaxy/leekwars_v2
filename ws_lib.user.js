@@ -26,7 +26,7 @@ _.script.load = function(path, file, callback) {
 
 	var isLoading = true
 
-	if (!(path + file) in _.script.loading) {
+	if (_.script.loading[path + file] === undefined) {
 		_.script.loading[path + file] = []
 		isLoading = false
 	}
