@@ -12,45 +12,6 @@
 // @grant         none
 // ==/UserScript==
 
-// Patch
-
-if (_.script.loading === undefined)
-	_.script.loading = {}
-
-_.script.load = function(path, file, callback) {
-
-	if ((path + file) in _.script.loaded) {
-		callback()
-		return null
-	}
-
-	var isLoading = true
-
-	if (_.script.loading[path + file] === undefined) {
-		_.script.loading[path + file] = []
-		isLoading = false
-	}
-
-	if (typeof callback == "function")
-		_.script.loading[path + file].push(callback)
-
-	if (!isLoading) {
-		var script = document.createElement('script')
-		script.src = path + file
-		script.onload = function() {
-			_.script.loaded[path + file] = true
-			for (var i in _.script.loading[path + file])
-				_.script.loading[path + file][i]()
-		}
-		script.async = false
-		script.onerror = function() {
-			_.log('Script loading failed : ' + file)
-		}
-		document.head.appendChild(script)
-	}
-
-}
-
 //function ws_lib(){
 
 	if(typeof WS == 'undefined'){
