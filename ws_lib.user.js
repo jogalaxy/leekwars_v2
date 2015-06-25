@@ -14,10 +14,10 @@
 
 // Patch
 
-_.script.load = function(path, file, callback) {
+if (_.script.loading === undefined)
+	_.script.loading = {}
 
-	if (_.script.loading === undefined)
-		_.script.loading = {}
+_.script.load = function(path, file, callback) {
 
 	if ((path + file) in _.script.loaded) {
 		callback()
@@ -26,7 +26,7 @@ _.script.load = function(path, file, callback) {
 
 	var isLoading = true
 
-	if ((path + file) in _.script.loading) {
+	if (!(path + file) in _.script.loading) {
 		_.script.loading[path + file] = []
 		isLoading = false
 	}
