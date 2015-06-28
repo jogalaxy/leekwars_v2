@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Fast Garden
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.9
+// @version       0.10
 // @description   Permet de lancer plus rapidement ses combats
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -118,7 +118,7 @@
 
 			if (!$('#garden-farmer .fight-history').length)
 				$('#garden-farmer').append('<div class="fight-history" type="farmer" element_id="0"></div>');
-			$('#garden-farmer .fight-history').append('<div class="fight-wrapper" fight="'+fight_id+'"><div class="fight generating"><div class="fighters"><a href="/leek/'+LW.farmer.id+'"><div class="fighter">'+LW.farmer.name+'</div></a><div class="center"><a href="/fight/'+fight_id+'"><img src="http://leekwars.com/static/image/icon/garden.png"></a></div><a href="/leek/'+params.target_id+'"><div class="fighter">'+enemy_name+'</div></a></div></div></div>');
+			$('#garden-farmer .fight-history').append('<div class="fight-wrapper" fight="'+fight_id+'"><div class="fight generating"><div class="fighters"><a href="/farmer/'+LW.farmer.id+'"><div class="fighter">'+LW.farmer.name+'</div></a><div class="center"><a href="/fight/'+fight_id+'"><img src="http://leekwars.com/static/image/icon/garden.png"></a></div><a href="/farmer/'+params.target_id+'"><div class="fighter">'+enemy_name+'</div></a></div></div></div>');
 		}
 
 		if (type == "team")
@@ -150,7 +150,7 @@
 
 			for (var i = 0; i < waitlist.length; i++)
 			{
-				if (request_counter < 50)
+				if (request_counter < 5)
 				{
 					request_counter++;
 					_.get('fight/get/' + waitlist[i], function(data)
