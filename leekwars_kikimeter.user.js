@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Kikimeter
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -275,6 +275,9 @@ function kikimeter()
 	}
 
 	$('#kikimeter_graph').highcharts({
+		chart: {
+			type: 'spline',
+		},
 		title: {
 			text: 'Points de vie de chaque poireau à chaque tour',
 			x: -20 //center
@@ -296,13 +299,24 @@ function kikimeter()
 			}],
 			min : 0
 		},
+		tooltip: {
+			shared: true,
+		},
 		legend: {
 			layout: 'vertical',
 			align: 'right',
-			verticalAlign: 'middle',
-			borderWidth: 0
+			verticalAlign: 'top',
+			floating: true,
+			borderWidth: 1
 		},
-		series: series
+		series: series,
+		plotOptions: {
+			spline: {
+				marker: {
+					enabled: false
+				}
+			}
+		}
 	});
 
 }
