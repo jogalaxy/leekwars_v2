@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Kikimeter
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.3
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -186,31 +186,49 @@ function kikimeter()
 
 	// Design
 
-	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3>Informations globales</h3><table class="report"><thead><th>Poireau</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancés</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos"></tbody></table><h3>Utilisation des Armes / Puces</h3><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table><h3>Graphique</h3><div id="kikimeter_graph"></div></div></div>');
+	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3>Informations globales</h3><table class="report"><thead><th>Poireau</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancés</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos"></tbody></table><br><br><table class="report"><thead><th>Bulbe</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancés</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table><h3>Utilisation des Armes / Puces</h3><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table><h3>Graphique</h3><div id="kikimeter_graph"></div></div></div>');
 
-	// [#kikimeter_infos] Team 1
-
+	// [#kikimeter_infos]
 	$('#kikimeter_infos').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 1'+((_fight.winner == 1)?' (Gagnants)':(_fight.winner == 2)?' (Perdants)':'')+'</td></tr>');
 	for (var i in leeks)
 	{
 		var leek = leeks[i];
-		if (leek.leek.team == 1)
+		if (leek.leek.team == 1 && !leek.leek.summon)
+		{
+			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
+			$('#kikimeter_infos').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
+		}
+	}
+	$('#kikimeter_infos').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 2'+((_fight.winner == 2)?' (Gagnants)':(_fight.winner == 1)?' (Perdants)':'')+'</td></tr>');
+	for (var i in leeks)
+	{
+		var leek = leeks[i];
+		if (leek.leek.team == 2 && !leek.leek.summon)
 		{
 			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
 			$('#kikimeter_infos').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
 		}
 	}
 
-	// [#kikimeter_infos] Team 2
-
-	$('#kikimeter_infos').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 2'+((_fight.winner == 2)?' (Gagnants)':(_fight.winner == 1)?' (Perdants)':'')+'</td></tr>');
+	// [#kikimeter_infos_bulbs]
+	$('#kikimeter_infos_bulbs').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 1'+((_fight.winner == 1)?' (Gagnants)':(_fight.winner == 2)?' (Perdants)':'')+'</td></tr>');
 	for (var i in leeks)
 	{
 		var leek = leeks[i];
-		if (leek.leek.team == 2)
+		if (leek.leek.team == 1 && leek.leek.summon)
 		{
 			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
-			$('#kikimeter_infos').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
+			$('#kikimeter_infos_bulbs').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
+		}
+	}
+	$('#kikimeter_infos_bulbs').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 2'+((_fight.winner == 2)?' (Gagnants)':(_fight.winner == 1)?' (Perdants)':'')+'</td></tr>');
+	for (var i in leeks)
+	{
+		var leek = leeks[i];
+		if (leek.leek.team == 2 && leek.leek.summon)
+		{
+			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
+			$('#kikimeter_infos_bulbs').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
 		}
 	}
 
@@ -300,7 +318,7 @@ function kikimeter()
 			min : 0
 		},
 		tooltip: {
-			shared: true,
+			// shared: true,
 		},
 		legend: {
 			layout: 'vertical',
