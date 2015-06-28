@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Kikimeter
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.3
+// @version       0.4
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -186,7 +186,7 @@ function kikimeter()
 
 	// Design
 
-	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3>Informations globales</h3><table class="report"><thead><th>Poireau</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancés</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos"></tbody></table><br><br><table class="report"><thead><th>Bulbe</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancés</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table><h3>Utilisation des Armes / Puces</h3><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table><h3>Graphique</h3><div id="kikimeter_graph"></div></div></div>');
+	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3>Graphique</h3><div id="kikimeter_graph"></div><h3>Informations globales</h3><table class="report"><thead><th>Poireau</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancés</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos"></tbody></table><br><br><table class="report"><thead><th>Bulbe</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancés</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table><h3>Utilisation des Armes / Puces</h3><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table></div></div>');
 
 	// [#kikimeter_infos]
 	$('#kikimeter_infos').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 1'+((_fight.winner == 1)?' (Gagnants)':(_fight.winner == 2)?' (Perdants)':'')+'</td></tr>');
