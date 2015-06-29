@@ -1,360 +1,119 @@
 
-// Informations (http://leekwars.com/static/script/game/game.v2.js)
-var ACTION_START_FIGHT = 0;
-var ACTION_USE_WEAPON = 1;
-var ACTION_USE_CHIP = 2;
-var ACTION_SET_WEAPON = 3;
-var ACTION_END_FIGHT = 4;
-var ACTION_PLAYER_DEAD = 5;
-var ACTION_NEW_TURN = 6;
-var ACTION_LEEK_TURN = 7;
-var ACTION_END_TURN = 8;
-var ACTION_SUMMONING = 9;
-var ACTION_MOVE_TO = 10;
-var ACTION_TP_LOST = 100;
-var ACTION_LIFE_LOST = 101;
-var ACTION_MP_LOST = 102; 
-var ACTION_CARE = 103; 
-var ACTION_BOOST_VITA = 104;
-var ACTION_RESURRECTION = 105;
-var ACTION_SAY = 200; 
-var ACTION_LAMA = 201; 
-var ACTION_SHOW_CELL = 202;
-var ACTION_ADD_WEAPON_EFFECT = 301;
-var ACTION_ADD_CHIP_EFFECT = 302;
-var ACTION_REMOVE_EFFECT = 303;
-var ACTION_BUG = 1002;
+var Notification = window.Notification || window.mozNotification || window.webkitNotification;
+
+Notification.requestPermission(function (permission) {});
+
+// On récupère la date
+var d = new Date();
+var n = Math.round(d.getTime() / 1000);
+
+var tchat_alert_1 = localStorage['tchat_alert_1'] === undefined ? [] : localStorage['tchat_alert_1'].split(';');
+var tchat_alert_2 = localStorage['tchat_alert_2'] === undefined ? [] : localStorage['tchat_alert_2'].split(';');
+var tchat_alert_3 = localStorage['tchat_alert_3'] === undefined ? [] : localStorage['tchat_alert_3'].split(';');
+
+$('body').on('click', '#tchat_alert_apply', save_params);
 
 LW.on('pageload', function()
 {
 
-	if (LW.currentPage == 'report')
+	if (LW.currentPage == 'settings')
 	{
-		kikimeter();
+		$('#settings-page .flex-container').first().append('<div class="column6"><div class="panel"><div class="header"><h2>Notifications sur le tchat - Tags</h2></div><div class="content"><div style="text-align: left">Veuillez entrer la liste des tags (séparés par un point-virgule) pour chaque type de notification<br>Exemple : Pilow;salut</div><br><h4>Message en rouge</h4><input type="text" id="tchat_alert_1"><br><h4>Notifications dans le jeu</h4><input type="text" id="tchat_alert_2"><br><h4>Notifications sur le système</h4><input type="text" id="tchat_alert_3"><br><br><center><input type="submit" class="button green" value="Appliquer" id="tchat_alert_apply"></center></div></div></div>');
+		$('#tchat_alert_1').val(tchat_alert_1.join(";"));
+		$('#tchat_alert_2').val(tchat_alert_2.join(";"));
+		$('#tchat_alert_3').val(tchat_alert_3.join(";"));
+	}
+
+	if (LW.currentPage == 'forum')
+	{
+		alert_1();
 	}
 
 });
 
-function kikimeter()
+function save_params()
 {
+	tchat_alert_1 = $('#tchat_alert_1').val().split(';');
+	tchat_alert_2 = $('#tchat_alert_2').val().split(';');
+	tchat_alert_3 = $('#tchat_alert_3').val().split(';');
+	localStorage['tchat_alert_1'] = tchat_alert_1.join(";");
+	localStorage['tchat_alert_2'] = tchat_alert_2.join(";");
+	localStorage['tchat_alert_3'] = tchat_alert_3.join(";");
+	_.toast('Paramètres sauvegardés !');
+}
 
-	var leeks = {};
-	var items = {};
-	var life  = {};
-
-	for (var i in _fight.data.leeks)
+function init_socket()
+{
+	if (LW.socket.socket === null || LW.socket.socket.onmessage === undefined)
+		return;
+	clearInterval(interval_init_socket);
+	LW.socket.socket.onmessage_back_tchat_alert = LW.socket.socket.onmessage;
+	LW.socket.socket.onmessage = function(msg)
 	{
-		var leek = _fight.data.leeks[i];
-		leeks[leek.id] = {
-			leek          : leek,
-			alive         : true,
-			name          : leek.name,
-			level         : leek.level,
-			dmg_in        : 0,
-			dmg_out       : 0,
-			heal_in       : 0,
-			heal_out      : 0,
-			kills         : 0,
-			usedPT        : 0,
-			usedPTperTurn : 0,
-			usedPM        : 0,
-			roundsPlayed  : 0,
-			actionsWeapon : 0,
-			actionsChip   : 0,
-			invocation    : 0,
-			resurrection  : 0,
-			fails         : 0,
-			crashes       : 0,
-			life          : leek.life,
-		};
-	}
-
-	life[0] = {};
-	for (var j in leeks)
-		life[0][j] = leeks[j].life;
-
-	var currentPlayer = 0;
-	var currentTurn = 1;
-	for (var i in _fight.data.actions)
-	{
-		var action = _fight.data.actions[i];
-		var type = action[0];
-
-		switch (type)
+		this.onmessage_back_tchat_alert(msg);
+		var _msg = JSON.parse(msg.data);
+		if (_msg[0] == FORUM_CHAT_RECEIVE)
 		{
-			case ACTION_NEW_TURN:
-				life[action[1]-1] = {};
-				for (var j in leeks)
-					life[action[1]-1][j] = leeks[j].life;
-				currentTurn = action[1];
-				break;
-
-			case ACTION_LEEK_TURN:
-				leeks[action[1]].roundsPlayed++;
-				currentPlayer = action[1];
-				break;
-
-			case ACTION_PM_LOST:
-				leeks[action[1]].usedPM += action[2];
-				break;
-
-			case ACTION_CARE:
-				leeks[action[1]].heal_in += action[2];
-				leeks[currentPlayer].heal_out += action[2];
-				leeks[action[1]].life += action[2];
-				break;
-
-			case ACTION_BOOST_VITA:
-				leeks[action[1]].heal_in += action[2];
-				leeks[currentPlayer].heal_out += action[2];
-				leeks[action[1]].life += action[2];
-				break;
-
-			case ACTION_LIFE_LOST:
-				leeks[action[1]].dmg_in += action[2];
-				leeks[currentPlayer].dmg_out += action[2];
-				leeks[action[1]].life -= action[2];
-				break;
-
-			case ACTION_PT_LOST:
-				leeks[action[1]].usedPT += action[2];
-				break;
-
-			case ACTION_PLAYER_DEAD:
-				leeks[action[1]].alive = false;
-				leeks[currentPlayer].kills++;
-				leeks[action[1]].life = 0;
-				break;
-
-			case ACTION_USE_WEAPON:
-				leeks[action[1]].actionsWeapon++;
-				if (action[4] == 1) // Echec
-					leeks[action[1]].fails++;
-				var name = LW.weapons[LW.weaponTemplates[action[3]].item].name;
-				if (items[name] === undefined)
-					items[name] = {};
-				if (items[name][action[1]] === undefined)
-					items[name][action[1]] = 0;
-				items[name][action[1]]++;
-				break;
-
-			case ACTION_USE_CHIP:
-				leeks[action[1]].actionsChip++;
-				if (action[4] == 1) // Echec
-					leeks[action[1]].fails++;
-				var name = LW.chips[LW.chipTemplates[action[3]].item].name;
-				if (items[name] === undefined)
-					items[name] = {};
-				if (items[name][action[1]] === undefined)
-					items[name][action[1]] = 0;
-				items[name][action[1]]++;
-				break;
-
-			case ACTION_SUMMONING:
-				leeks[action[1]].invocation++;
-				leeks[action[2]].name += '<br><span class="alive"></span>('+leeks[action[1]].name+')';
-				break;
-
-			case ACTION_RESURRECTION:
-				leeks[action[2]].resurrection++;
-				break;
-
-			case ACTION_BUG:
-				leeks[action[1]].crashes++;
-				break;
-
-		}
-	}
-
-	life[currentTurn] = {};
-	for (var j in leeks)
-		life[currentTurn][j] = leeks[j].life;
-
-	// Design
-
-	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3>Graphique</h3><div id="kikimeter_graph"></div><h3>Informations globales</h3><table class="report"><thead><th>Poireau</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos"></tbody></table><div id="kikimeter_infos_bulbs_container"><br><br><table class="report"><thead><th>Bulbe</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table></div><h3>Utilisation des Armes / Puces</h3><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table></div></div>');
-
-	// [#kikimeter_infos]
-	$('#kikimeter_infos').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 1'+((_fight.winner == 1)?' (Gagnants)':(_fight.winner == 2)?' (Perdants)':'')+'</td></tr>');
-	for (var i in leeks)
-	{
-		var leek = leeks[i];
-		if (leek.leek.team == 1 && !leek.leek.summon)
-		{
-			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
-			$('#kikimeter_infos').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
-		}
-	}
-	$('#kikimeter_infos').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 2'+((_fight.winner == 2)?' (Gagnants)':(_fight.winner == 1)?' (Perdants)':'')+'</td></tr>');
-	for (var i in leeks)
-	{
-		var leek = leeks[i];
-		if (leek.leek.team == 2 && !leek.leek.summon)
-		{
-			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
-			$('#kikimeter_infos').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
-		}
-	}
-
-	// [#kikimeter_infos_bulbs]
-	var bulb_count = 0;
-	$('#kikimeter_infos_bulbs').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 1'+((_fight.winner == 1)?' (Gagnants)':(_fight.winner == 2)?' (Perdants)':'')+'</td></tr>');
-	for (var i in leeks)
-	{
-		var leek = leeks[i];
-		if (leek.leek.team == 1 && leek.leek.summon)
-		{
-			bulb_count++;
-			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
-			$('#kikimeter_infos_bulbs').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
-		}
-	}
-	$('#kikimeter_infos_bulbs').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 2'+((_fight.winner == 2)?' (Gagnants)':(_fight.winner == 1)?' (Perdants)':'')+'</td></tr>');
-	for (var i in leeks)
-	{
-		var leek = leeks[i];
-		if (leek.leek.team == 2 && leek.leek.summon)
-		{
-			bulb_count++;
-			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
-			$('#kikimeter_infos_bulbs').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
-		}
-	}
-	if (bulb_count == 0)
-		$('#kikimeter_infos_bulbs_container').hide();
-
-	// [#kikimeter_items]
-
-	for (var team = 1; team <= 2; team++)
-	{
-		for (var i in leeks)
-		{
-			var leek = leeks[i];
-			if (!leek.leek.summon && leek.leek.team == team)
+			if (_msg[1][1] != LW.farmer.id)
 			{
-				$('#kikimeter_items thead tr').append('<th>' + leek.name + '</th>');
+				var message = _msg[1][3];
+
+				var tchat_alert_2_find = false;
+				var tchat_alert_3_find = false;
+
+				for (var i in tchat_alert_2)
+					if (tchat_alert_2[i] != '' && message.toLowerCase().search(tchat_alert_2[i].toLowerCase()) != -1)
+						tchat_alert_2_find = true;
+				for (var i in tchat_alert_3)
+					if (tchat_alert_3[i] != '' && message.toLowerCase().search(tchat_alert_3[i].toLowerCase()) != -1)
+						tchat_alert_3_find = true;
+
+				if (tchat_alert_2_find && _msg[1][4] > n)
+					alert_2(_msg[1]);
+
+				if (tchat_alert_3_find && _msg[1][4] > n)
+					alert_3(_msg[1]);
 			}
+			alert_1();
 		}
 	}
-	for (var i in items)
-	{
-		var item = items[i];
-		var line = '<td>'+i+'</td>';
+}
 
-		for (var team = 1; team <= 2; team++)
+var interval_init_socket = setInterval(init_socket, 1);
+
+function alert_1()
+{
+	
+	$('.chat-message-messages div').each(function()
+	{
+		var message = $(this).text();
+		for (var i in tchat_alert_1)
 		{
-			for (var j in leeks)
+			if (tchat_alert_1[i] != '' && message.toLowerCase().search(tchat_alert_1[i].toLowerCase()) != -1)
 			{
-				var leek = leeks[j];
-				if (!leek.leek.summon && leek.leek.team == team)
-				{
-					if (item[j] === undefined)
-						line += '<td>0</td>';
-					else
-						line += '<td>'+item[j]+'</td>';
-				}
+				$(this).css('color', '#e74c3c');
+				$(this).css('font-weight', 'bold');
 			}
 		}
 
-		$('#kikimeter_items tbody').append('<tr>' + line + '</tr>');
-	}
-
-	// [#kikimeter_graph]
-
-	var teamColors = {
-		1: "#0000FF",
-		2: "#FF0000"
-	};
-
-	var series = [];
-	var data = [];
-	for (var i in leeks)
-	{
-		var leek = leeks[i];
-		if (!leek.leek.summon)
-		{
-			data = [];
-			var thisTurn = 0;
-			
-			for (var j = 0; j <= _fight.report.duration; j++)
-				data.push(life[j][i]);
-
-			series.push({name: leek.leek.name, color: teamColors[leek.leek.team], data: data});
-		}
-	}
-
-	var chart_type = localStorage['kikimeter_graph_type'] === undefined ? 'spline' : localStorage['kikimeter_graph_type'];
-
-	$('#kikimeter_graph').highcharts({
-		chart: {
-			type: chart_type,
-		},
-		title: {
-			text: 'Points de vie de chaque poireau à chaque tour',
-		},
-		subtitle: {
-			text: '<a href="#" id="kikimeter_graph_button">Activer / Désactiver le lissage de la courbe</a>',
-			useHTML: true,
-
-		},
-		xAxis: {
-			title: {
-				text: 'Tour'
-			},
-			categories: generate_categories(_fight.report.duration)
-		},
-		yAxis: {
-			title: {
-				text: 'Points de vie'
-			},
-			plotLines: [{
-				value: 0,
-				width: 1,
-				color: '#808080'
-			}],
-			min : 0
-		},
-		legend: {
-			layout: 'vertical',
-			align: 'right',
-			verticalAlign: 'top',
-			borderWidth: 1
-		},
-		series: series,
-		plotOptions: {
-			line: {
-				marker: {
-					enabled: false
-				}
-			},
-			spline: {
-				marker: {
-					enabled: false
-				}
-			}
-		},
-		exporting: {
-			enabled: false
-		}
-	});
-
-	var chart = $('#kikimeter_graph').highcharts();
-
-	$('#kikimeter_graph_button').click(function(e)
-	{
-		e.preventDefault();
-		var new_type = chart.series[0].type == 'line' ? 'spline' : 'line';
-		localStorage['kikimeter_graph_type'] = new_type;
-		for (var i in chart.series)
-			chart.series[i].update({type: new_type})
 	});
 
 }
 
-function generate_categories(turn)
+function alert_2(msg)
 {
-	var categories = [];
-	for(var i = 0 ; i <= turn; i++)
-		categories.push(i);
-	return categories;
+	_.toast("Notification sur le tchat (de "+msg[2]+")<br>" + msg[3]);
+}
+
+function alert_3(msg)
+{
+
+	var instance = new Notification(
+		msg[2], {
+			body: msg[3],
+			icon: "http://leekwars.com/static/image/forum_unseen"
+
+		}
+	);
+
 }
