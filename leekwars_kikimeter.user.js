@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Kikimeter
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.5
+// @version       0.6
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -186,7 +186,7 @@ function kikimeter()
 
 	// Design
 
-	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3>Graphique</h3><div id="kikimeter_graph"></div><h3>Informations globales</h3><table class="report"><thead><th>Poireau</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos"></tbody></table><br><br><table class="report"><thead><th>Bulbe</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table><h3>Utilisation des Armes / Puces</h3><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table></div></div>');
+	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3>Graphique</h3><div id="kikimeter_graph"></div><h3>Informations globales</h3><table class="report"><thead><th>Poireau</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos"></tbody></table><div id="kikimeter_infos_bulbs_container"><br><br><table class="report"><thead><th>Bulbe</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table></div><h3>Utilisation des Armes / Puces</h3><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table></div></div>');
 
 	// [#kikimeter_infos]
 	$('#kikimeter_infos').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 1'+((_fight.winner == 1)?' (Gagnants)':(_fight.winner == 2)?' (Perdants)':'')+'</td></tr>');
@@ -211,12 +211,14 @@ function kikimeter()
 	}
 
 	// [#kikimeter_infos_bulbs]
+	var bulb_count = 0;
 	$('#kikimeter_infos_bulbs').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 1'+((_fight.winner == 1)?' (Gagnants)':(_fight.winner == 2)?' (Perdants)':'')+'</td></tr>');
 	for (var i in leeks)
 	{
 		var leek = leeks[i];
 		if (leek.leek.team == 1 && leek.leek.summon)
 		{
+			bulb_count++;
 			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
 			$('#kikimeter_infos_bulbs').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
 		}
@@ -227,10 +229,13 @@ function kikimeter()
 		var leek = leeks[i];
 		if (leek.leek.team == 2 && leek.leek.summon)
 		{
+			bulb_count++;
 			leek.usedPTperTurn = Math.round(leek.usedPT / leek.roundsPlayed * 10) / 10;
 			$('#kikimeter_infos_bulbs').append('<tr><td class="name">'+(leek.alive?'<span class="alive"></span>':'<span class="dead"></span>')+leek.name+'</td><td>'+leek.level+'</td><td>'+leek.dmg_in+'</td><td>'+leek.dmg_out+'</td><td>'+leek.heal_in+'</td><td>'+leek.heal_out+'</td><td>'+leek.kills+'</td><td>'+leek.usedPT+'</td><td>'+leek.usedPTperTurn+'</td><td>'+leek.usedPM+'</td><td>'+leek.roundsPlayed+'</td><td>'+leek.actionsWeapon+'</td><td>'+leek.actionsChip+'</td><td>'+leek.invocation+'</td><td>'+leek.resurrection+'</td><td>'+leek.fails+'</td><td>'+leek.crashes+'</td></tr>');
 		}
 	}
+	if (bulb_count == 0)
+		$('#kikimeter_infos_bulbs_container').hide();
 
 	// [#kikimeter_items]
 
@@ -292,13 +297,19 @@ function kikimeter()
 		}
 	}
 
+	var chart_type = localStorage['kikimeter_graph_type'] === undefined ? 'spline' : localStorage['kikimeter_graph_type'];
+
 	$('#kikimeter_graph').highcharts({
 		chart: {
-			type: 'spline',
+			type: chart_type,
 		},
 		title: {
 			text: 'Points de vie de chaque poireau à chaque tour',
-			x: -20 //center
+		},
+		subtitle: {
+			text: '<a href="#" id="kikimeter_graph_button">Activer / Désactiver le lissage de la courbe</a>',
+			useHTML: true,
+
 		},
 		xAxis: {
 			title: {
@@ -317,24 +328,39 @@ function kikimeter()
 			}],
 			min : 0
 		},
-		tooltip: {
-			// shared: true,
-		},
 		legend: {
 			layout: 'vertical',
 			align: 'right',
 			verticalAlign: 'top',
-			floating: true,
 			borderWidth: 1
 		},
 		series: series,
 		plotOptions: {
+			line: {
+				marker: {
+					enabled: false
+				}
+			},
 			spline: {
 				marker: {
 					enabled: false
 				}
 			}
+		},
+		exporting: {
+			enabled: false
 		}
+	});
+
+	var chart = $('#kikimeter_graph').highcharts();
+
+	$('#kikimeter_graph_button').click(function(e)
+	{
+		e.preventDefault();
+		var new_type = chart.series[0].type == 'line' ? 'spline' : 'line';
+		localStorage['kikimeter_graph_type'] = new_type;
+		for (var i in chart.series)
+			chart.series[i].update({type: new_type})
 	});
 
 }
