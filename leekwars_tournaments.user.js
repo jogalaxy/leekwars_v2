@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Inscription Tournois
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.5
+// @version       0.6
 // @description   Inscription aux tournois
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -11,11 +11,31 @@
 // @grant         none
 // ==/UserScript==
 
-LW.on('initialized', function()
+var registered = false;
+
+LW.on('pageload', function()
 {
-	_.post('farmer/register-tournament')
-	for (var leek_id in LW.farmer.leeks)
+	if (!registered)
 	{
-		_.post('leek/register-tournament', {leek_id: leek_id})
+		// Farmer
+		if (!LW.farmer.tournament.registered)
+			_.post('farmer/register-tournament')
+
+		// Solo
+		for (var leek_id in LW.farmer.leeks)
+			_.post('leek/register-tournament', {leek_id: leek_id})
+
+		// Team
+		if (LW.farmer.team)
+		{
+			_.get('team/get-private/' + LW.farmer.team.id + '/$', function(data)
+			{
+				if (data.success)
+					for (var composition in data.team.compositions)
+						if (!data.team.compositions[composition].tournament.registered)
+							_.post('team/register-tournament', {composition_id: data.team.compositions[composition].id});
+			});
+		}
 	}
+	registered = true;
 });
