@@ -38,8 +38,6 @@ var interval_init_socket = setInterval(init_socket, 100);
 
 function popup(farmer_name)
 {
-	console.log("count_popup", count_popup);
-
 	if (count_popup == 0 && LW.currentPage != "messages")
 	{
 		_popup = new _.popup.new('main.private_message_popup', {name: farmer_name}, 900, true);
