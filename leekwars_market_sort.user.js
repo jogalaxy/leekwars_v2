@@ -2,7 +2,7 @@
 // @name          [Leek Wars] Marker Sort
 // @namespace     https://github.com/jogalaxy/leekwars_v2
 // @version       0.1
-// @description   Tri les items du marché
+// @description   Tri les puces du marché
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_market_sort.user.js
