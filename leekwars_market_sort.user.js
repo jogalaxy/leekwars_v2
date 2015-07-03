@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name          [Leek Wars] Marker Sort
+// @name          [Leek Wars] Market Sort
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Tri les puces du marché
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -37,7 +37,6 @@ var group = {
 	20: "Miroirs",
 	21: "Boosts",
 	22: "Boosts",
-
 
 };
 
