@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Editor - Import & Export
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Permet d'importer et d'exporter ses IA
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -75,11 +75,13 @@ function export_function()
 	var name = editors[current].name;
 	var content = editors[current].editor.getValue();
 
-	var download = document.createElement('a');
-	download.setAttribute('href', "data:text/plain;charset=utf-8,"+encodeURIComponent(content));
-	download.setAttribute('download', name);
-	download.click();
-	download.remove();
+	var a = document.createElement('a');
+	document.body.appendChild(a);
+	a.download = name;
+	a.href = "data:text/plain;charset=utf-8,"+encodeURIComponent(content);
+	a.download = name;
+	a.click();
+	a.remove();
 }
 
 function upload(files)
