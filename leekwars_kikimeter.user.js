@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name          [Leek Wars] Kikimeter
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.7
+// @version       0.8
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
-// @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.js
-// @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.js
+// @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.jshttps://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.js
+// @downloadURL   
 // @match         http://leekwars.com/*
 // @require       http://code.highcharts.com/highcharts.js
 // @require       http://code.highcharts.com/modules/exporting.js
@@ -436,8 +436,8 @@ LW.pages.report.kikimeter = function()
 		e.preventDefault();
 		var new_type = chart.series[0].type == 'line' ? 'spline' : 'line';
 		localStorage['kikimeter_graph_type'] = new_type;
-		for (var i in chart.series)
-			chart.series[i].update({type: new_type})
+		for (var i = 0; chart.series.length; i++)
+			chart.series[i].update({type: new_type});
 	});
 
 }
