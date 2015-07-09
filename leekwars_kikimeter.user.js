@@ -5,8 +5,8 @@
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
-// @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.jshttps://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.js
-// @downloadURL   
+// @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.js
+// @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.js
 // @match         http://leekwars.com/*
 // @require       http://code.highcharts.com/highcharts.js
 // @require       http://code.highcharts.com/modules/exporting.js
