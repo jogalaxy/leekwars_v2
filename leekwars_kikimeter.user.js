@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Kikimeter
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.6
+// @version       0.7
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -13,43 +13,17 @@
 // @grant         none
 // ==/UserScript==
 
-// Informations (http://leekwars.com/static/script/game/game.v2.js)
-var ACTION_START_FIGHT = 0;
-var ACTION_USE_WEAPON = 1;
-var ACTION_USE_CHIP = 2;
-var ACTION_SET_WEAPON = 3;
-var ACTION_END_FIGHT = 4;
-var ACTION_PLAYER_DEAD = 5;
-var ACTION_NEW_TURN = 6;
-var ACTION_LEEK_TURN = 7;
-var ACTION_END_TURN = 8;
-var ACTION_SUMMONING = 9;
-var ACTION_MOVE_TO = 10;
-var ACTION_TP_LOST = 100;
-var ACTION_LIFE_LOST = 101;
-var ACTION_MP_LOST = 102; 
-var ACTION_CARE = 103; 
-var ACTION_BOOST_VITA = 104;
-var ACTION_RESURRECTION = 105;
-var ACTION_SAY = 200; 
-var ACTION_LAMA = 201; 
-var ACTION_SHOW_CELL = 202;
-var ACTION_ADD_WEAPON_EFFECT = 301;
-var ACTION_ADD_CHIP_EFFECT = 302;
-var ACTION_REMOVE_EFFECT = 303;
-var ACTION_BUG = 1002;
-
 LW.on('pageload', function()
 {
 
 	if (LW.currentPage == 'report')
 	{
-		kikimeter();
+		LW.pages.report.kikimeter();
 	}
 
 });
 
-function kikimeter()
+LW.pages.report.kikimeter = function()
 {
 
 	var leeks = {};
@@ -164,12 +138,12 @@ function kikimeter()
 				items[name][action[1]]++;
 				break;
 
-			case ACTION_SUMMONING:
+			case ACTION_SUMMON:
 				leeks[action[1]].invocation++;
 				leeks[action[2]].name += '<br><span class="alive"></span>('+leeks[action[1]].name+')';
 				break;
 
-			case ACTION_RESURRECTION:
+			case ACTION_RESURRECT:
 				leeks[action[2]].resurrection++;
 				break;
 
@@ -185,8 +159,99 @@ function kikimeter()
 		life[currentTurn][j] = leeks[j].life;
 
 	// Design
+	var panel_0_visibility = (localStorage['kikimeter_panel_0_visibility'] == "hide") ? false : true;
+	var panel_1_visibility = (localStorage['kikimeter_panel_1_visibility'] == "hide") ? false : true;
+	var panel_2_visibility = (localStorage['kikimeter_panel_2_visibility'] == "hide") ? false : true;
+	var panel_3_visibility = (localStorage['kikimeter_panel_3_visibility'] == "hide") ? false : true;
+	var panel_4_visibility = (localStorage['kikimeter_panel_4_visibility'] == "hide") ? false : true;
+	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3 style="float:left">Graphique</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_0_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_0"><div id="kikimeter_graph"></div></div><h3 style="float:left">Informations globales</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_1_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_1"><table class="report"><thead><th>Poireau</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos"></tbody></table><div id="kikimeter_infos_bulbs_container"><br><br><table class="report"><thead><th>Bulbe</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table></div></div><h3 style="float:left">Utilisation des Armes / Puces</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_2_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_2"><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table></div><div id="kikimeter_errors"><h3 style="float:left">Erreurs (<span id="kikimeter_errors_count">0</span>)</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_3_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_3"></div></div><div id="kikimeter_warnings"><h3 style="float:left">Avertissements (<span id="kikimeter_warnings_count">0</span>)</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_4_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_4"></div></div></div></div>');	
 
-	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3>Graphique</h3><div id="kikimeter_graph"></div><h3>Informations globales</h3><table class="report"><thead><th>Poireau</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos"></tbody></table><div id="kikimeter_infos_bulbs_container"><br><br><table class="report"><thead><th>Bulbe</th><th>Niveau</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invocations lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Plantages</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table></div><h3>Utilisation des Armes / Puces</h3><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table></div></div>');
+	$('#kikimeter_panel_0_visibility').click(function()
+	{
+		panel_0_visibility = !panel_0_visibility;
+		$('#kikimeter_panel_0').toggle();
+		$('#kikimeter_graph').highcharts().reflow();
+		if (panel_0_visibility)
+			localStorage['kikimeter_panel_0_visibility'] = "show";
+		else
+			localStorage['kikimeter_panel_0_visibility'] = "hide";
+	});
+	$('#kikimeter_panel_1_visibility').click(function()
+	{
+		panel_1_visibility = !panel_0_visibility;
+		$('#kikimeter_panel_1').toggle();
+		if (panel_1_visibility)
+			localStorage['kikimeter_panel_1_visibility'] = "show";
+		else
+			localStorage['kikimeter_panel_1_visibility'] = "hide";
+	});
+	$('#kikimeter_panel_2_visibility').click(function()
+	{
+		panel_2_visibility = !panel_2_visibility;
+		$('#kikimeter_panel_2').toggle();
+		if (panel_2_visibility)
+			localStorage['kikimeter_panel_2_visibility'] = "show";
+		else
+			localStorage['kikimeter_panel_2_visibility'] = "hide";
+	});
+	$('#kikimeter_panel_3_visibility').click(function()
+	{
+		panel_3_visibility = !panel_3_visibility;
+		$('#kikimeter_panel_3').toggle();
+		if (panel_3_visibility)
+			localStorage['kikimeter_panel_3_visibility'] = "show";
+		else
+			localStorage['kikimeter_panel_3_visibility'] = "hide";
+	});
+	$('#kikimeter_panel_4_visibility').click(function()
+	{
+		panel_4_visibility = !panel_4_visibility;
+		$('#kikimeter_panel_4').toggle();
+		if (panel_4_visibility)
+			localStorage['kikimeter_panel_4_visibility'] = "show";
+		else
+			localStorage['kikimeter_panel_4_visibility'] = "hide";
+	});
+	if (!panel_0_visibility) $('#kikimeter_panel_0').hide();
+	if (!panel_1_visibility) $('#kikimeter_panel_1').hide();
+	if (!panel_2_visibility) $('#kikimeter_panel_2').hide();
+	if (!panel_3_visibility) $('#kikimeter_panel_3').hide();
+	if (!panel_4_visibility) $('#kikimeter_panel_4').hide();
+
+	// Logs
+	var count_error = 0;
+	var count_warning = 0;
+	$('#kikimeter_errors').hide();
+	$('#kikimeter_warnings').hide();
+	if (LW.connected)
+	{
+		_.get('fight/get-logs/' + _fight.id + '/$', function(logs)
+		{
+			for (var a in logs.logs)
+			{
+				for (var b in logs.logs[a])
+				{
+					var log = logs.logs[a][b];
+					var leek = log[0];
+					var type = log[1];
+					if (type == 2) // Warning
+					{
+						count_warning++;
+						$('#kikimeter_panel_4').append("<div class='log warning'>&nbsp&nbsp&nbsp[" + leeks[leek].name + "] " + log[2] + "</div>");
+					}
+					else if (type == 3) // Error
+					{
+						count_error++;
+						$('#kikimeter_panel_3').append("<div class='log error'>&nbsp&nbsp&nbsp[" + leeks[leek].name + "] " + log[2] + "</div>");
+					}
+				}
+			}
+			$('#kikimeter_errors_count').text(count_error);
+			$('#kikimeter_warnings_count').text(count_warning);
+			if (count_error != 0) $('#kikimeter_errors').show();
+			if (count_warning != 0) $('#kikimeter_warnings').show();
+		});
+	}
 
 	// [#kikimeter_infos]
 	$('#kikimeter_infos').append('<tr><td colspan="17" style="padding:10px 8px;text-align:left;font-weight:bold">Team 1'+((_fight.winner == 1)?' (Gagnants)':(_fight.winner == 2)?' (Perdants)':'')+'</td></tr>');
@@ -254,6 +319,7 @@ function kikimeter()
 	{
 		var item = items[i];
 		var line = '<td>'+i+'</td>';
+		var count = 0;
 
 		for (var team = 1; team <= 2; team++)
 		{
@@ -263,14 +329,20 @@ function kikimeter()
 				if (!leek.leek.summon && leek.leek.team == team)
 				{
 					if (item[j] === undefined)
+					{
 						line += '<td>0</td>';
+					}
 					else
+					{
+						count += item[j]
 						line += '<td>'+item[j]+'</td>';
+					}
 				}
 			}
 		}
 
-		$('#kikimeter_items tbody').append('<tr>' + line + '</tr>');
+		if (count)
+			$('#kikimeter_items tbody').append('<tr>' + line + '</tr>');
 	}
 
 	// [#kikimeter_graph]
@@ -315,7 +387,12 @@ function kikimeter()
 			title: {
 				text: 'Tour'
 			},
-			categories: generate_categories(_fight.report.duration)
+			categories: function (turn){
+				var categories = [];
+				for(var i = 0 ; i <= turn; i++)
+					categories.push(i);
+				return categories;
+			}(_fight.report.duration)
 		},
 		yAxis: {
 			title: {
@@ -363,12 +440,4 @@ function kikimeter()
 			chart.series[i].update({type: new_type})
 	});
 
-}
-
-function generate_categories(turn)
-{
-	var categories = [];
-	for(var i = 0 ; i <= turn; i++)
-		categories.push(i);
-	return categories;
 }

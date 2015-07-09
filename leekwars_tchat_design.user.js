@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Design
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Change le design du tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -34,8 +34,8 @@
 			}\
 			#chat-messages .chat-message\
 			{\
-				margin: 5px 0;\
-				padding: 10px;\
+				margin: 2px 0;\
+				padding: 5px 10px;\
 				max-width: 80%;\
 				border-radius: 5px;\
 				clear: both;\
