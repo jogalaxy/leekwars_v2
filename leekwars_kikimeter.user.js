@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Kikimeter
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.8
+// @version       0.9
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -169,48 +169,72 @@ LW.pages.report.kikimeter = function()
 	$('#kikimeter_panel_0_visibility').click(function()
 	{
 		panel_0_visibility = !panel_0_visibility;
-		$('#kikimeter_panel_0').toggle();
-		$('#kikimeter_graph').highcharts().reflow();
 		if (panel_0_visibility)
+		{
+			$('#kikimeter_panel_0').show();
 			localStorage['kikimeter_panel_0_visibility'] = "show";
+		}
 		else
+		{
+			$('#kikimeter_panel_0').hide();
 			localStorage['kikimeter_panel_0_visibility'] = "hide";
+		}
 	});
 	$('#kikimeter_panel_1_visibility').click(function()
 	{
 		panel_1_visibility = !panel_0_visibility;
-		$('#kikimeter_panel_1').toggle();
 		if (panel_1_visibility)
+		{
+			$('#kikimeter_panel_1').show();
 			localStorage['kikimeter_panel_1_visibility'] = "show";
+		}
 		else
+		{
+			$('#kikimeter_panel_1').hide();
 			localStorage['kikimeter_panel_1_visibility'] = "hide";
+		}
 	});
 	$('#kikimeter_panel_2_visibility').click(function()
 	{
 		panel_2_visibility = !panel_2_visibility;
-		$('#kikimeter_panel_2').toggle();
 		if (panel_2_visibility)
+		{
+			$('#kikimeter_panel_2').show();
 			localStorage['kikimeter_panel_2_visibility'] = "show";
+		}
 		else
+		{
+			$('#kikimeter_panel_2').hide();
 			localStorage['kikimeter_panel_2_visibility'] = "hide";
+		}
 	});
 	$('#kikimeter_panel_3_visibility').click(function()
 	{
 		panel_3_visibility = !panel_3_visibility;
-		$('#kikimeter_panel_3').toggle();
 		if (panel_3_visibility)
+		{
+			$('#kikimeter_panel_3').show();
 			localStorage['kikimeter_panel_3_visibility'] = "show";
+		}
 		else
+		{
+			$('#kikimeter_panel_3').hide();
 			localStorage['kikimeter_panel_3_visibility'] = "hide";
+		}
 	});
 	$('#kikimeter_panel_4_visibility').click(function()
 	{
 		panel_4_visibility = !panel_4_visibility;
-		$('#kikimeter_panel_4').toggle();
 		if (panel_4_visibility)
+		{
+			$('#kikimeter_panel_4').show();
 			localStorage['kikimeter_panel_4_visibility'] = "show";
+		}
 		else
+		{
+			$('#kikimeter_panel_4').hide();
 			localStorage['kikimeter_panel_4_visibility'] = "hide";
+		}
 	});
 	if (!panel_0_visibility) $('#kikimeter_panel_0').hide();
 	if (!panel_1_visibility) $('#kikimeter_panel_1').hide();
