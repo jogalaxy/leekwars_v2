@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Kikimeter
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.9
+// @version       0.10
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -182,7 +182,7 @@ LW.pages.report.kikimeter = function()
 	});
 	$('#kikimeter_panel_1_visibility').click(function()
 	{
-		panel_1_visibility = !panel_0_visibility;
+		panel_1_visibility = !panel_1_visibility;
 		if (panel_1_visibility)
 		{
 			$('#kikimeter_panel_1').show();
