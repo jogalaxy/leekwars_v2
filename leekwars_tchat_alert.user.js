@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Alert
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.6
+// @version       0.7
 // @description   Alerte l'utilisateur quand un tag personnalisé est rentré sur le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -11,14 +11,12 @@
 // @grant         none
 // ==/UserScript==
 
-
 var Notification = window.Notification || window.mozNotification || window.webkitNotification;
 
 Notification.requestPermission(function (permission) {});
 
 // On récupère la date
-var d = new Date();
-var n = Math.round(d.getTime() / 1000);
+var n = __SERVER_TIME;
 
 var tchat_alert_1 = localStorage['tchat_alert_1'] === undefined ? [] : localStorage['tchat_alert_1'].split(';');
 var tchat_alert_2 = localStorage['tchat_alert_2'] === undefined ? [] : localStorage['tchat_alert_2'].split(';');
@@ -37,11 +35,6 @@ LW.on('pageload', function()
 		$('#tchat_alert_3').val(tchat_alert_3.join(";"));
 	}
 
-	if (LW.currentPage == 'forum')
-	{
-		alert_1();
-	}
-
 });
 
 function save_params()
@@ -55,48 +48,43 @@ function save_params()
 	_.toast('Paramètres sauvegardés !');
 }
 
-function init_socket()
+chatAddMessage_back_tchat_alert = chatAddMessage;
+
+chatAddMessage = function(chat, author, authorName, msg, time, color, avatarChanged, lang)
 {
-	if (LW.socket.socket === null || LW.socket.socket.onmessage === undefined)
-		return;
-	clearInterval(interval_init_socket);
-	LW.socket.socket.onmessage_back_tchat_alert = LW.socket.socket.onmessage;
-	LW.socket.socket.onmessage = function(msg)
+	chatAddMessage_back_tchat_alert(chat, author, authorName, msg, time, color, avatarChanged, lang);
+	alert_controller(author, authorName, msg, time);
+};
+
+
+function alert_controller(author_id, author_name, message, message_time)
+{
+	if (author_id != LW.farmer.id)
 	{
-		this.onmessage_back_tchat_alert(msg);
-		var _msg = JSON.parse(msg.data);
-		if (_msg[0] == FORUM_CHAT_RECEIVE)
-		{
-			if (_msg[1][1] != LW.farmer.id)
-			{
-				var message = _msg[1][3];
+		var tchat_alert_2_find = false;
+		var tchat_alert_3_find = false;
 
-				var tchat_alert_2_find = false;
-				var tchat_alert_3_find = false;
+		for (var i in tchat_alert_2)
+			if (tchat_alert_2[i] != '' && message.toLowerCase().search(tchat_alert_2[i].toLowerCase()) != -1)
+				tchat_alert_2_find = true;
+		for (var i in tchat_alert_3)
+			if (tchat_alert_3[i] != '' && message.toLowerCase().search(tchat_alert_3[i].toLowerCase()) != -1)
+				tchat_alert_3_find = true;
 
-				for (var i in tchat_alert_2)
-					if (tchat_alert_2[i] != '' && message.toLowerCase().search(tchat_alert_2[i].toLowerCase()) != -1)
-						tchat_alert_2_find = true;
-				for (var i in tchat_alert_3)
-					if (tchat_alert_3[i] != '' && message.toLowerCase().search(tchat_alert_3[i].toLowerCase()) != -1)
-						tchat_alert_3_find = true;
+		if (tchat_alert_2_find && message_time > n)
+			alert_2(author_name, message);
 
-				if (tchat_alert_2_find && _msg[1][4] > n)
-					alert_2(_msg[1]);
-
-				if (tchat_alert_3_find && _msg[1][4] > n)
-					alert_3(_msg[1]);
-			}
-			alert_1();
-		}
+		if (tchat_alert_3_find && message_time > n)
+			alert_3(author_name, message);
 	}
-}
+	alert_1();
 
-var interval_init_socket = setInterval(init_socket, 1);
+	if (message_time > n)
+		n = message_time;
+}
 
 function alert_1()
 {
-	
 	$('.chat-message-messages div').each(function()
 	{
 		var message = $(this).text();
@@ -108,22 +96,20 @@ function alert_1()
 				$(this).css('font-weight', 'bold');
 			}
 		}
-
 	});
-
 }
 
-function alert_2(msg)
+function alert_2(author_name, message)
 {
-	_.toast("Notification sur le tchat (de "+msg[2]+")<br>" + msg[3]);
+	_.toast("Notification sur le tchat (de "+author_name+")<br>"+message);
 }
 
-function alert_3(msg)
+function alert_3(author_name, message)
 {
 
 	var instance = new Notification(
-		msg[2], {
-			body: msg[3],
+		author_name, {
+			body: message,
 			icon: "http://leekwars.com/static/image/forum_unseen"
 
 		}
