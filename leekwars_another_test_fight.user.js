@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Another Test Fight
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Permet de relancer un combat de test avec les mêmes paramètres
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -19,7 +19,7 @@
 
 	LW.on('pageload', function()
 	{
-		if (LW.currentPage == 'report' && _fight.context == 'test')
+		if (LW.currentPage == 'report' && _fight.context == 0)
 		{
 			$('#report-page .first center').append('<div class="button" id="refight_test">' + _.lang.langs[_.lang.current]['report']['refight'] + '</div>')
 		}
