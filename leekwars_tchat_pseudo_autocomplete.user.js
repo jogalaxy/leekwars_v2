@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Pseudo Autocomplete
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.9
+// @version       0.10
 // @description   Ajout de l'autocomplétion pour les pseudos dans le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -15,6 +15,8 @@
 {
 
 	var autocompleteNames = [];
+
+	var lastPseudo;
 
 	function autocompleteChat(_chat, _parent)
 	{
@@ -44,6 +46,7 @@
 			_parent.find('.chat-message .chat-message-author').each(function()
 			{
 				var name = $(this).text();
+				name = name.split(' [')[0];
 				if (name.substr(0, currentName.length).toLowerCase() == currentName.toLowerCase())
 				{
 					if (autocompleteNames.indexOf(name) != -1)
@@ -56,14 +59,10 @@
 
 			if (autocompleteNames.length > 0)
 			{
-
 				var before = _chat.val().substring(0, startNamePos + 1);
 				var after = _chat.val().substring(endNamePos);
-				currentName = autocompleteNames[autocompleteNames.length-1];
-
-				currentName = currentName.split(' [')[0];
-
-				_chat.val(before + currentName + ' ' + after);
+				currentName = autocompleteNames[autocompleteNames.length-1] + ' ';
+				_chat.val(before + currentName + after);
 				setCursorPosition(_chat, startNamePos + currentName.length + 1);
 
 			}
@@ -74,16 +73,12 @@
 			var currentPos = autocompleteNames.indexOf(currentName);
 			if (currentPos != -1)
 			{
-				currentPos++;
-				if (currentPos > autocompleteNames.length - 1) currentPos = 0;
-
+				currentPos--;
+				if (currentPos < 0) currentPos = autocompleteNames.length - 1;
 				var before = _chat.val().substring(0, startNamePos + 1);
 				var after = _chat.val().substring(endNamePos + 1);
-				currentName = autocompleteNames[autocompleteNames.length-1];
-
-				currentName = currentName.split(' [')[0];
-
-				_chat.val(before + currentName + ' ' + after);
+				currentName = autocompleteNames[currentPos] + ' ';
+				_chat.val(before + currentName + after);
 				setCursorPosition(_chat, startNamePos + currentName.length + 1);
 			}
 		}
