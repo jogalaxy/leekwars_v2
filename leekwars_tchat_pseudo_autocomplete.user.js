@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Pseudo Autocomplete
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.8
+// @version       0.9
 // @description   Ajout de l'autocomplétion pour les pseudos dans le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -59,9 +59,11 @@
 
 				var before = _chat.val().substring(0, startNamePos + 1);
 				var after = _chat.val().substring(endNamePos);
-				currentName = autocompleteNames[autocompleteNames.length-1] + " ";
+				currentName = autocompleteNames[autocompleteNames.length-1];
 
-				_chat.val(before + currentName + after);
+				currentName = currentName.split(' [')[0];
+
+				_chat.val(before + currentName + ' ' + after);
 				setCursorPosition(_chat, startNamePos + currentName.length + 1);
 
 			}
@@ -77,9 +79,11 @@
 
 				var before = _chat.val().substring(0, startNamePos + 1);
 				var after = _chat.val().substring(endNamePos + 1);
-				currentName = autocompleteNames[currentPos] + " ";
+				currentName = autocompleteNames[autocompleteNames.length-1];
 
-				_chat.val(before + currentName + after);
+				currentName = currentName.split(' [')[0];
+
+				_chat.val(before + currentName + ' ' + after);
 				setCursorPosition(_chat, startNamePos + currentName.length + 1);
 			}
 		}
