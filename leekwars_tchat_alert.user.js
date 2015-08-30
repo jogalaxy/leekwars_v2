@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Alert
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.7
+// @version       0.8
 // @description   Alerte l'utilisateur quand un tag personnalisé est rentré sur le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -24,6 +24,8 @@ var tchat_alert_3 = localStorage['tchat_alert_3'] === undefined ? [] : localStor
 
 $('body').on('click', '#tchat_alert_apply', save_params);
 
+var init = false
+
 LW.on('pageload', function()
 {
 
@@ -33,6 +35,17 @@ LW.on('pageload', function()
 		$('#tchat_alert_1').val(tchat_alert_1.join(";"));
 		$('#tchat_alert_2').val(tchat_alert_2.join(";"));
 		$('#tchat_alert_3').val(tchat_alert_3.join(";"));
+	}
+
+	if (!init)
+	{
+		chatAddMessage_back_tchat_alert = chatAddMessage;
+
+		chatAddMessage = function(chat, author, authorName, msg, time, color, avatarChanged, lang)
+		{
+			chatAddMessage_back_tchat_alert(chat, author, authorName, msg, time, color, avatarChanged, lang);
+			alert_controller(author, authorName, msg, time);
+		};
 	}
 
 });
@@ -47,15 +60,6 @@ function save_params()
 	localStorage['tchat_alert_3'] = tchat_alert_3.join(";");
 	_.toast('Paramètres sauvegardés !');
 }
-
-chatAddMessage_back_tchat_alert = chatAddMessage;
-
-chatAddMessage = function(chat, author, authorName, msg, time, color, avatarChanged, lang)
-{
-	chatAddMessage_back_tchat_alert(chat, author, authorName, msg, time, color, avatarChanged, lang);
-	alert_controller(author, authorName, msg, time);
-};
-
 
 function alert_controller(author_id, author_name, message, message_time)
 {
