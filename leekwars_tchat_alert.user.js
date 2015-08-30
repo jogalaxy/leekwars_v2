@@ -48,14 +48,21 @@ function save_params()
 	_.toast('Paramètres sauvegardés !');
 }
 
-chatAddMessage_back_tchat_alert = chatAddMessage;
-
-chatAddMessage = function(chat, author, authorName, msg, time, color, avatarChanged, lang)
+var init_interval = setInterval(function()
 {
-	chatAddMessage_back_tchat_alert(chat, author, authorName, msg, time, color, avatarChanged, lang);
-	alert_controller(author, authorName, msg, time);
-};
-
+	if (LW.socket.socket !== null && $('.notifications-counter').length)
+	{
+		LW.socket.socket.onmessage_back_tchat_alert = LW.socket.socket.onmessage;
+		LW.socket.socket.onmessage = function(msg)
+		{
+			this.onmessage_back_tchat_alert(msg);
+			var data = JSON.parse(msg.data);
+			if (data[0] == FORUM_CHAT_RECEIVE)
+				alert_controller(data[1][1], data[1][2], data[1][3], data[1][4]);
+		}
+		clearInterval(init_interval);
+	}
+}, 100);
 
 function alert_controller(author_id, author_name, message, message_time)
 {
