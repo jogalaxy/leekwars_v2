@@ -58,7 +58,10 @@ localStorage['multiaccount_db'] = JSON.stringify({
 	'Phenolphtaleine' : [
 		'C20H14O4',
 		'Aelriana'
-	]
+	],
 
+	'onepierre' : [
+		'twopierre'
+	]
 
 });
