@@ -67,6 +67,10 @@ localStorage['multiaccount_db'] = JSON.stringify({
 	'ATX180' : [
 		'Lalala',
 		'Muk'
+	],
+
+	'Onys' : [
+		'SecondCompteNumero1'
 	]
 
 });
