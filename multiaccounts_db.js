@@ -10,7 +10,7 @@ localStorage['multiaccount_db'] = JSON.stringify({
 		'leekidator1',
 		'service001',
 		'ilovechameaux4',
-		
+
 	],
 
 	'WhiteSlash' : [
@@ -71,6 +71,10 @@ localStorage['multiaccount_db'] = JSON.stringify({
 
 	'Onys' : [
 		'SecondCompteNumero1'
+	],
+
+	'Manticore' : [
+		'Mantison'
 	]
 
 });
