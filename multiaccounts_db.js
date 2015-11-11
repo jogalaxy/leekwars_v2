@@ -42,13 +42,16 @@ localStorage['multiaccount_db'] = JSON.stringify({
 	],
 
 	'Liemmerle' : [
-		'Lia'
+		'Lia',
+		'Lei',
+		'Lie'
 	],
 
 	'Twilight' : [
 		'Rhapsody',
 		'Sareel',
-		'Ebatsin'
+		'Ebatsin',
+		'Esperluette'
 	],
 
 	'Bushizo' : [
@@ -75,6 +78,14 @@ localStorage['multiaccount_db'] = JSON.stringify({
 
 	'Manticore' : [
 		'Mantison'
+	],
+
+	'Loutreavin' : [
+		'Loutrevian'
+	],
+
+	'tagadanar' : [
+		'tagadagain'
 	]
 
 });
