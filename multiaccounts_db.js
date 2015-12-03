@@ -51,7 +51,8 @@ localStorage['multiaccount_db'] = JSON.stringify({
 		'Rhapsody',
 		'Sareel',
 		'Ebatsin',
-		'Esperluette'
+		'Esperluette',
+		'TwiTwiTwiTwiTwiTwiTwiTwiTwiTwi'
 	],
 
 	'Bushizo' : [
