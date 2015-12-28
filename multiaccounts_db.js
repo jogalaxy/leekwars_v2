@@ -74,7 +74,8 @@ localStorage['multiaccount_db'] = JSON.stringify({
 	],
 
 	'Onys' : [
-		'SecondCompteNumero1'
+		'SecondCompteNumero1',
+		'polysynchrotique'
 	],
 
 	'Manticore' : [
