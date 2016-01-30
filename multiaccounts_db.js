@@ -85,7 +85,12 @@ localStorage['multiaccount_db'] = JSON.stringify({
 	],
 
 	'tagadanar' : [
-		'tagadagain'
+		'tagadagain',
+		'tagadamore'
+	],
+
+	'Natelkze' : [
+		'Etapetah'
 	]
 
 });
