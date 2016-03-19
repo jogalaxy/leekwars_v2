@@ -33,11 +33,7 @@ function main () {
 		    $('#settings-page .flex-container').first().append('<div class="column6"><div class="panel"><div class="header"><h2>Taille écran de combat</h2></div><div class="content">Taille: <input type="text" id="fight_screen_size"><br><br>Tout redimensionner : <input type="checkbox" id="fight_screen_resizeall"><br><br><br><center><input class="button green" value="Appliquer" id="fight_screen_size_apply"></center></div></div></div>');
 
 		    $('#fight_screen_size').val(size);
-			if (allResize) {
-		    	$('#fight_screen_resizeall').prop('checked', true);
-			} else {
-				$('#fight_screen_resizeall').prop('checked', false);
-			}
+	    	$('#fight_screen_resizeall').prop('checked', allResize);
 	    }
 
         if (LW.currentPage == 'fight') {
@@ -46,7 +42,7 @@ function main () {
 
 			if (allResize) {
 				$("#fight-page").css("width", size)
-				$("#fight-page").css("height", Math.ceil(game.width / RATIO))
+				$("#fight-page").css("height", Math.ceil(size / RATIO))
 
 				$("#fight-page").css("margin-right", 'auto')
 				$("#fight-page").css("margin-left", 'auto')
