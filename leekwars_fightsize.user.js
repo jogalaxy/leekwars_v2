@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Fight screen size
 // @namespace    https://github.com/jogalaxy/leekwars_v2
-// @version      0.1
+// @version      0.2
 // @description  Resize the fight screen
 // @author       k-artorias
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -16,11 +16,11 @@ function main () {
 (function() {
 	LW.on('pageload', function() {
 
-        var size = localStorage['fight_screen_size'] === undefined ? 900 : localStorage['fight_screen_size'];
-
-		var allResize = localStorage['fight_screen_resizeall'] === undefined ? false : (localStorage['fight_screen_resizeall']  === 'true');
-
         if (LW.currentPage == 'settings') {
+
+			var size = localStorage['fight_screen_size'] === undefined ? 900 : localStorage['fight_screen_size'];
+
+			var allResize = localStorage['fight_screen_resizeall'] === undefined ? false : (localStorage['fight_screen_resizeall']  === 'true');
 
             $('body').on('click', '#fight_screen_size_apply', function () {
             	var fight_screen_size = $('#fight_screen_size').val();
@@ -39,6 +39,10 @@ function main () {
         if (LW.currentPage == 'fight') {
 
 		  LW.pages.fight.resize = function() {
+
+			var size = localStorage['fight_screen_size'] === undefined ? 900 : localStorage['fight_screen_size'];
+
+			var allResize = localStorage['fight_screen_resizeall'] === undefined ? false : (localStorage['fight_screen_resizeall']  === 'true');
 
 			if (allResize) {
 				$("#fight-page").css("width", size)
