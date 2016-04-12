@@ -32,7 +32,7 @@
 			{\
 				background-color: rgb(50, 50, 50);\
 			}\
-			.chat-messages\
+			.chat-messages, #chat .chat-messages\
 			{\
 				background-color: rgb(30, 30, 30);\
 			}\

@@ -28,11 +28,14 @@
 	function init(farmer_id)
 	{
 		addGlobalStyle('\
-			#chat-messages\
+			.chat-messages\
 			{\
 				background-color: #e4ded9;\
 			}\
-			#chat-messages .chat-message\
+			#chat .chat-messages {\
+				background-color: #e4ded9;\
+			}\
+			.chat-messages .chat-message\
 			{\
 				margin: 2px 0;\
 				padding: 5px 10px;\
@@ -40,43 +43,43 @@
 				border-radius: 5px;\
 				clear: both;\
 			}\
-			#chat-messages .chat-message-time\
+			.chat-messages .chat-message-time\
 			{\
 				top: auto;\
 				bottom: 5px;\
 			}\
-			#chat-messages .chat-message-messages\
+			.chat-messages .chat-message-messages\
 			{\
 				padding-left: 0px;\
 			}\
-			#chat-messages .chat-avatar\
+			.chat-messages .chat-avatar\
 			{\
 				background-color: #fff;\
 				border-radius: 40px;\
 				box-shadow: 1px 1px 5px #555;\
 			}\
-			#chat-messages .chat-message\
+			.chat-messages .chat-message\
 			{\
 				float:left;\
 				background-color: #fff;\
 				margin-left: 60px;\
 			}\
-			#chat-messages .chat-message .chat-avatar\
+			.chat-messages .chat-message .chat-avatar\
 			{\
 				margin-left: -60px;\
 			}\
-			#chat-messages .chat-message[author="'+farmer_id+'"]\
+			.chat-messages .chat-message[author="'+farmer_id+'"]\
 			{\
 				float:right;\
 				background-color: #e3f4c7;\
 				margin-right: 60px;\
 			}\
-			#chat-messages .chat-message[author="'+farmer_id+'"] .chat-avatar\
+			.chat-messages .chat-message[author="'+farmer_id+'"] .chat-avatar\
 			{\
 				float:right;\
 				margin-right: -60px;\
 			}\
-			#chat-messages .chat-message[author="'+farmer_id+'"] .chat-message-author\
+			.chat-messages .chat-message[author="'+farmer_id+'"] .chat-message-author\
 			{\
 				text-align: right;\
 			}\
