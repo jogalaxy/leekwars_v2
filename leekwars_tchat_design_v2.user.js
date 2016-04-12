@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Design v2
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.11
 // @description   Change le design du tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -32,11 +32,11 @@
 			{\
 				background-color: rgb(50, 50, 50);\
 			}\
-			#chat-messages\
+			.chat-messages, #chat .chat-messages\
 			{\
 				background-color: rgb(30, 30, 30);\
 			}\
-			#chat-messages .chat-message\
+			.chat-messages .chat-message\
 			{\
 				margin: 2px 0;\
 				padding: 5px 10px;\
@@ -44,21 +44,21 @@
 				border-radius: 5px;\
 				clear: both;\
 			}\
-			#chat-messages .chat-message-time\
+			.chat-messages .chat-message-time\
 			{\
 				top: auto;\
 				bottom: 5px;\
 			}\
-			#chat-messages .chat-message-messages\
+			.chat-messages .chat-message-messages\
 			{\
 				padding-left: 0px;\
 			}\
-			#chat-messages .chat-avatar\
+			.chat-messages .chat-avatar\
 			{\
 				border-radius: 40px;\
 				box-shadow: 0px 0px 10px rgb(90, 90, 90);\
 			}\
-			#chat-messages .chat-message\
+			.chat-messages .chat-message\
 			{\
 				float:left;\
 				background-color: rgb(40, 40, 40);\
@@ -66,22 +66,22 @@
 				margin-left: 60px;\
 				border: 0;\
 			}\
-			#chat-messages .chat-message .chat-avatar\
+			.chat-messages .chat-message .chat-avatar\
 			{\
 				margin-left: -60px;\
 			}\
-			#chat-messages .chat-message[author="'+farmer_id+'"]\
+			.chat-messages .chat-message[author="'+farmer_id+'"]\
 			{\
 				float:right;\
 				background-color: rgb(60, 60, 60);\
 				margin-right: 60px;\
 			}\
-			#chat-messages .chat-message[author="'+farmer_id+'"] .chat-avatar\
+			.chat-messages .chat-message[author="'+farmer_id+'"] .chat-avatar\
 			{\
 				float:right;\
 				margin-right: -60px;\
 			}\
-			#chat-messages .chat-message[author="'+farmer_id+'"] .chat-message-author\
+			.chat-messages .chat-message[author="'+farmer_id+'"] .chat-message-author\
 			{\
 				text-align: right;\
 			}\
