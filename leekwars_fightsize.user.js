@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Fight screen size
 // @namespace    https://github.com/jogalaxy/leekwars_v2
-// @version      0.2
+// @version      0.3
 // @description  Resize the fight screen
 // @author       k-artorias
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://raw.githubusercontent.com/k-artorias/leekwars_v2/master/leekwars_fightsize.user.js
 // @updateURL     https://raw.githubusercontent.com/k-artorias/leekwars_v2/master/leekwars_fightsize.user.js
-// @match        http://leekwars.com/*
+// @match        https://leekwars.com/*
+// @match        https://www.leekwars.com/*
 // @grant        none
 // ==/UserScript==
 
