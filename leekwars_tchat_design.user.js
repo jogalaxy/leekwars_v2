@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Design
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.21
+// @version       0.22
 // @description   Change le design du tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_design.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_design.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 

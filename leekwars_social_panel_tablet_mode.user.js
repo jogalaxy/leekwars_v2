@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Social Panel Tablet Mode
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Affiche la sidebar de droite en mode tablette
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_social_panel_tablet_mode.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_social_panel_tablet_mode.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 

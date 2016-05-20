@@ -1,14 +1,13 @@
 // ==UserScript==
 // @name          Fonctions Userscripts de WhiteSlash
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Rajoute certains utilitaires utilisés par tous mes userscripts. Pas besoin d'installer.
 // @author        WhiteSlash
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/ws_lib.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/ws_lib.user.js
-// @match         http://leekwars.com/*
-// @include       http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
@@ -101,7 +100,7 @@
 	}
 //}
 
-//var script = document.createElement('script'); 
-//script.type = 'text/javascript'; 
+//var script = document.createElement('script');
+//script.type = 'text/javascript';
 //script.innerHTML = ""+ws_lib+"ws_lib();";//lol
 //document.getElementsByTagName('head')[0].appendChild(script);

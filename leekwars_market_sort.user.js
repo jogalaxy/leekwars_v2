@@ -1,14 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Market Sort
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.3
+// @version       0.4
 // @description   Tri les puces du marché
 // @author        jojo123 && toufalk
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_market_sort.user.js
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_market_sort.user.js
-// @match         http://leekwars.com/*
-// @match         http://beta.leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 

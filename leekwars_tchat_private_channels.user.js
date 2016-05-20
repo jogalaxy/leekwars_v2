@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Private Channel
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.3
 // @description   Permet d'ajouter des canaux privés
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_private_channels.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_private_channels.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
@@ -40,8 +40,8 @@ var scrollTop_value = -1;
 		if (localStorage_channels[i] != undefined)
 			addChannel(localStorage_channels[i]);
 
-	var script = document.createElement('script'); 
-	script.type = 'text/javascript'; 
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
 	script.src="http://nodejs-jogalaxy.rhcloud.com/socket.io/socket.io.js";
 	script.onload = init;
 	document.getElementsByTagName('head')[0].appendChild(script);

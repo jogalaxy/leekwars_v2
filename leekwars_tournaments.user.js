@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Inscription Tournois
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.7
+// @version       0.8
 // @description   Inscription aux tournois
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tournaments.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tournaments.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 

@@ -1,19 +1,19 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat mute
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2.2
+// @version       0.2.3
 // @description   Ajout de la fonctionnalité de mute sur le tchat. Ne fonctionne que sur le tchat normal.
 // @author        WhiteSlash
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_mute.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_mute.user.js
-// @match         http://leekwars.com/*
-// @include       http://leekwars.com/*
+// @match         *://*.leekwars.com/*
+// @include       *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
 function leekwars_tchat_mute(){
-	
+
 	$(function(){
 		WS.require('forum.v2.js', function(){
 			var aMuted = {};
@@ -21,7 +21,7 @@ function leekwars_tchat_mute(){
 			try {
 		        localStorage.setItem(1, 1);
 		        localStorage.removeItem(1);
-		        
+
 		        aMuted = JSON.parse(localStorage.getItem('tchat/muted'));
 		        //si c'est la première fois qu'on arrive
 		        if(!aMuted){
@@ -127,8 +127,8 @@ function leekwars_tchat_mute(){
 
 function injectMe(){
 	//ajout de ce userscript dans la page
-	var script = document.createElement('script'); 
-	script.type = 'text/javascript'; 
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
 	script.innerHTML = ""+leekwars_tchat_mute+"leekwars_tchat_mute();";//lol
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
@@ -136,8 +136,8 @@ function injectMe(){
 
 //Ajout dépendance avec mon utilitaire de scripts
 if(typeof WS === "undefined"){
-	var script = document.createElement('script'); 
-	script.type = 'text/javascript'; 
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
 	script.src="https://rawgit.com/jogalaxy/leekwars_v2/master/ws_lib.user.js";
 	script.onload = function(){
 		injectMe();

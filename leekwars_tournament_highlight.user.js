@@ -1,14 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Tournament hightlight
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Ajoute la possibilité de colorer d'autres poireaux dans les tournois
 // @author        WhiteSlash
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tournament_highlight.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tournament_highlight.user.js
-// @match         http://leekwars.com/*
-// @include       http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
@@ -18,7 +17,7 @@
 function leekwars_tournament_highlight(){
 
 	$(function(){
-		
+
 		//système de gestion des options
 		WS.addOptions('leekwars_tournament_highlight', {
 			'title' : '[UserScript] Coloration des tournois',
@@ -78,11 +77,11 @@ function leekwars_tournament_highlight(){
 			         $('svg#tournament a').each(function(){
 			         	for(var i = 0 ; i < ids.length ; i++){
 			                if(ids[i] == findIdInUrl($(this).attr('xlink:href'), /\/leek\/(.*)/)) {
-			                 	coloriseCell($(this), color); 
+			                 	coloriseCell($(this), color);
 			                 }
 			                 else if(ids[i] == findIdInUrl($(this).attr('xlink:href'), /\/farmer\/(.*)/)){
 			                 	coloriseCell($(this), color);
-			                 	$(this).find('rect').css('opacity',0.4); 
+			                 	$(this).find('rect').css('opacity',0.4);
 			                 	//on inverse l'image et le rectangle car l'opacité faible de l'image c'est bof
 			                 	var img = $(this).find('image').detach();
 			                 	$(this).prepend(img);
@@ -97,8 +96,8 @@ function leekwars_tournament_highlight(){
 
 function injectMe(){
 	//ajout de ce userscript dans la page
-	var script = document.createElement('script'); 
-	script.type = 'text/javascript'; 
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
 	script.innerHTML = ""+leekwars_tournament_highlight+"leekwars_tournament_highlight();";//lol
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
@@ -106,8 +105,8 @@ function injectMe(){
 
 //Ajout dépendance avec mon utilitaire de scripts
 if(typeof WS === "undefined"){
-	var script = document.createElement('script'); 
-	script.type = 'text/javascript'; 
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
 	script.src="https://rawgit.com/jogalaxy/leekwars_v2/master/ws_lib.user.js";
 	script.onload = function(){
 		injectMe();
