@@ -93,18 +93,24 @@ function export_all_functions()
 
         for(var i in editors)
         {
-                var name = editors[i].name;
-                name = name;
-                var content = editors[i].editor.getValue();
-                zip.file(name, content);
+                $.ajax({
+                        url: 'https://leekwars.com/api/ai/get/' + i +'/$',
+                        dataType: "json",
+                        success: function(result){
+                                zip.file(result.ai.name, result.ai.code);
+                        },
+                        async: false
+                });
         }
 
         var a = document.createElement('a');
         document.body.appendChild(a);
         a.download = "LeekScript.zip";
-        a.href = "data:application/zip;base64," + zip.generate({type:"base64"});
-        a.click();
-        a.remove();
+        zip.generateAsync({type:"base64"}).then(function(content){
+               a.href = "data:application/zip;base64," + content;
+               a.click();
+               a.remove(); 
+        });
 }
 
 function upload(files)
