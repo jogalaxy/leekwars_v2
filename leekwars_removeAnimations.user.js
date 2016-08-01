@@ -30,6 +30,23 @@ function mainRemoveAnimations () {
             return result
         }
     }
+    // inArray
+    function inArray(val, array){
+        for (var i in array)
+            if (val === array[i]) return true;
+        return false;        
+    }
+    // récupère l'action avant la mort d'un leek pour commencer le slow motion au bon moment.
+    function getSlowMotionActions(){
+        var slowMotionActions = [];
+        var nbActions = game.actions.length;
+        for (var i = 1 ; i < (nbActions-1); i++)
+        {		            
+            var nextActionType =  game.actions[i+1][0];
+            if (nextActionType === ACTION_PLAYER_DEAD) slowMotionActions.push(i);
+        }	
+        return slowMotionActions;
+    }
     
 LW.on('pageload', function()
 {
@@ -76,7 +93,7 @@ LW.on('pageload', function()
         + 'Chip aureol (croix au dessus du leek) : <input type="checkbox" id="removeChipAureol"><br>'
         + 'Chip heal (animation verte quand on soigne un leek) : <input type="checkbox" id="removeChipHeal"><br>'
         + 'Say : <input type="checkbox" id="removeSay"><br>'
-        + 'Slow Motion (ajoute un ralenti sur les kills) : <input type="checkbox" id="addSlowMotion"><br>'
+        + '<br>Slow Motion (ajoute un ralenti sur les kills) : <input type="checkbox" id="addSlowMotion"><br>'
         + '<br><br><center><input class="button green" value="Appliquer" id="remove_animation_apply"></center></div></div></div>');
 
     	$('#removeGas').prop('checked', removeGas);
@@ -142,8 +159,7 @@ LW.on('pageload', function()
 
                 //say
                 if (removeSay) {
-                    var nbLeeks = game.leeks.length;
-                    console.log('ok ' + nbLeeks);
+                    var nbLeeks = game.leeks.length;                    
                     for (var i = 0; i<nbLeeks; i++){
                         game.leeks[i].say = function(message) {};
                     }
@@ -151,9 +167,10 @@ LW.on('pageload', function()
                 
                 //slow motion
                 if (addSlowMotion) {
+					var slowMotionActions = getSlowMotionActions();										
                     interceptFunction(game, "doAction", {
                         before: function(action){
-                            if(action[0]==ACTION_PLAYER_DEAD){
+                            if (inArray(game.currentAction, slowMotionActions)){ 
                                 var oldGameSpeed = game.speed;
                                 game.speed = 0.1;
                                 setTimeout(function(){
@@ -164,8 +181,6 @@ LW.on('pageload', function()
                     });
                 }
 
-                game.actions.filter(function(a) { return a[0] === ACTION_USE_WEAPON && a[3] === 11;})
-
 
 			}
 		}, 100);
@@ -174,9 +189,10 @@ LW.on('pageload', function()
 
 
 })();
-
-
+    
 };
+
+
 
 
 var script = document.createElement('script');
