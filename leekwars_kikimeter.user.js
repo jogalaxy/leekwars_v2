@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Kikimeter
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.11
+// @version       0.12
 // @description   Ce script améliore le rapport de combat : affiche un résumé des combats de leekwars, des graphes et tableaux d'analyse
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.js
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_kikimeter.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @require       http://code.highcharts.com/highcharts.js
 // @require       http://code.highcharts.com/modules/exporting.js
 // @grant         none
@@ -164,7 +164,7 @@ LW.pages.report.kikimeter = function()
 	var panel_2_visibility = (localStorage['kikimeter_panel_2_visibility'] == "hide") ? false : true;
 	var panel_3_visibility = (localStorage['kikimeter_panel_3_visibility'] == "hide") ? false : true;
 	var panel_4_visibility = (localStorage['kikimeter_panel_4_visibility'] == "hide") ? false : true;
-	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3 style="float:left">Graphique</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_0_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_0"><div id="kikimeter_graph"></div></div><h3 style="float:left">Informations globales</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_1_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_1"><table class="report"><thead><th>Poireau</th><th>Niv.</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invoc. lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Bugs</th></thead><tbody id="kikimeter_infos"></tbody></table><div id="kikimeter_infos_bulbs_container"><br><br><table class="report"><thead><th>Bulbe</th><th>Niv.</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invoc. lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Bugs</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table></div></div><h3 style="float:left">Utilisation des Armes / Puces</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_2_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_2"><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table></div><div id="kikimeter_errors"><h3 style="float:left">Erreurs (<span id="kikimeter_errors_count">0</span>)</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_3_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_3"></div></div><div id="kikimeter_warnings"><h3 style="float:left">Avertissements (<span id="kikimeter_warnings_count">0</span>)</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_4_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_4"></div></div></div></div>');	
+	$('.panel').first().after('<div class="panel"><div class="header"><h2>Résumé</h2></div><div class="content" id=""><h3 style="float:left">Graphique</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_0_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_0"><div id="kikimeter_graph"></div></div><h3 style="float:left">Informations globales</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_1_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_1"><table class="report"><thead><th>Poireau</th><th>Niv.</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invoc. lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Bugs</th></thead><tbody id="kikimeter_infos"></tbody></table><div id="kikimeter_infos_bulbs_container"><br><br><table class="report"><thead><th>Bulbe</th><th>Niv.</th><th>Dégats reçus</th><th>Dégats infligés</th><th>Soins reçus</th><th>Soins lancés</th><th>Kills</th><th>PT utilisés</th><th>PT/tour utilisés</th><th>PM utilisés</th><th>Tours joués</th><th>Tirs</th><th>Usages Puces</th><th>Invoc. lancées</th><th>Retours à la vie</th><th>Echecs</th><th>Bugs</th></thead><tbody id="kikimeter_infos_bulbs"></tbody></table></div></div><h3 style="float:left">Utilisation des Armes / Puces</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_2_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_2"><table class="report" id="kikimeter_items"><thead><tr><th style="width:200px">Arme / Puce</th></tr></thead><tbody></tbody></table></div><div id="kikimeter_errors"><h3 style="float:left">Erreurs (<span id="kikimeter_errors_count">0</span>)</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_3_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_3"></div></div><div id="kikimeter_warnings"><h3 style="float:left">Avertissements (<span id="kikimeter_warnings_count">0</span>)</h3><div style="float:right;margin:10px 0" id="kikimeter_panel_4_visibility"><img class="expand" src="http://leekwars.com/static/image/expand.png"></div><div style="clear:both"></div><div id="kikimeter_panel_4"></div></div></div></div>');
 
 	$('#kikimeter_panel_0_visibility').click(function()
 	{
@@ -385,7 +385,7 @@ LW.pages.report.kikimeter = function()
 		{
 			data = [];
 			var thisTurn = 0;
-			
+
 			for (var j = 0; j <= _fight.report.duration; j++)
 				data.push(life[j][i]);
 

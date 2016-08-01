@@ -51,7 +51,8 @@ localStorage['multiaccount_db'] = JSON.stringify({
 		'Rhapsody',
 		'Sareel',
 		'Ebatsin',
-		'Esperluette'
+		'Esperluette',
+		'TwiTwiTwiTwiTwiTwiTwiTwiTwiTwi'
 	],
 
 	'Bushizo' : [
@@ -73,7 +74,8 @@ localStorage['multiaccount_db'] = JSON.stringify({
 	],
 
 	'Onys' : [
-		'SecondCompteNumero1'
+		'SecondCompteNumero1',
+		'polysynchrotique'
 	],
 
 	'Manticore' : [
@@ -85,12 +87,13 @@ localStorage['multiaccount_db'] = JSON.stringify({
 	],
 
 	'tagadanar' : [
-		'tagadagain',
-		'tagadamore'
+		'tagadagain'
 	],
 
-	'Natelkze' : [
-		'Etapetah'
+	'klimmesil' : [
+		'klommesol',
+		'klim',
+		'kelmer'
 	]
 
 });

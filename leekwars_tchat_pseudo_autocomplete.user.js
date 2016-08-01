@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Pseudo Autocomplete
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.11
+// @version       0.13
 // @description   Ajout de l'autocomplétion pour les pseudos dans le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_pseudo_autocomplete.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_pseudo_autocomplete.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
@@ -20,7 +20,6 @@
 
 	function autocompleteChat(_chat, _parent)
 	{
-
 		var startNamePos = getSelectionStart(_chat);
 		var endNamePos = getSelectionStart(_chat)-1;
 
@@ -44,7 +43,6 @@
 
 		if (autocompleteNames.length == 0 && currentName.length > 0)
 		{
-
 			_parent.find('.chat-message .chat-message-author').each(function()
 			{
 				var name = $(this).text();
@@ -87,12 +85,12 @@
 
 	}
 
-	$(document).on('keydown', '#social-panel .chat-input', function(e)
+	$(document).on('keydown', '.chat-input', function(e)
 	{
 		if (e.keyCode === 9)
 		{
 			e.preventDefault();
-			autocompleteChat($('#social-panel .chat-input'), $('.chat-messages'));
+			autocompleteChat($(e.target), $(e.target).parent().parent().first().find('.chat-messages'));
 		}
 		else
 		{
@@ -100,38 +98,7 @@
 		}
 	});
 
-	$(document).on('keydown', '#chat-input', function(e)
-	{
-		if (e.keyCode === 9)
-		{
-			e.preventDefault();
-			autocompleteChat($('#chat-input'), $('.chat-messages'));
-		}
-		else
-		{
-			autocompleteNames = [];
-		}
-	});
-
-	$(document).on('keydown', '#team-chat-input', function(e)
-	{
-		if (e.keyCode === 9)
-		{
-			e.preventDefault();
-			autocompleteChat($('#team-chat-input'), $('#team-chat-messages'));
-		}
-		else
-		{
-			autocompleteNames = [];
-		}
-	});
-
-	$(document).on('click', '#social-panel .chat-input', function(e)
-	{
-		autocompleteNames = [];
-	});
-
-	$(document).on('click', '#chat-input', function(e)
+	$(document).on('click', '.chat-input', function(e)
 	{
 		autocompleteNames = [];
 	});
@@ -167,7 +134,7 @@
 		{
 			var r = document.selection.createRange().duplicate();
 			r.moveEnd('character', input.value.length);
-			if (r.text == '') 
+			if (r.text == '')
 			pos = input.value.length;
 			pos = input.value.lastIndexOf(r.text);
 		}
@@ -188,7 +155,7 @@
 		{
 			var r = document.selection.createRange().duplicate();
 			r.moveStart('character', -input.value.length);
-			if (r.text == '') 
+			if (r.text == '')
 			pos = input.value.length;
 			pos = input.value.lastIndexOf(r.text);
 		}

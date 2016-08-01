@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Private Message Design
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Change le design de la page des messages privés
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_private_message_design.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_private_message_design.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 

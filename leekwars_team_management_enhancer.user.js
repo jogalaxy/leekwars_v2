@@ -1,20 +1,19 @@
 // ==UserScript==
 // @name          [Leek Wars] Team Management Enhancer
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2.2
+// @version       0.2.3
 // @description   Diminution de la taille des poireaux sur la page d'équipe et amélioration de la gestion de poireaux
 // @author        WhiteSlash
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_team_management_enhancer.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_team_management_enhancer.user.js
-// @match         http://leekwars.com/*
-// @include       http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
 
 function leekwars_team_management_enhancer(){
-	
+
 	$(function(){
 		WS.require('team.v2.js', function(){
 			//on se greffe comme un sale à la fin de la fonction tournaments qui est la dernière appelée sur la page
@@ -45,7 +44,7 @@ function leekwars_team_management_enhancer(){
 			    $('.content.leeks .leek .fights span').css({'font-size':'14px'});
 			    $('.content.leeks .leek .fights img').css({'height':'13px', 'width':'13px'});
 			    $('.compo .leeks').css('min-height', '50px');
-			    
+
 			    //Gestion de la dernière compo pour la caler à droite
 			    $('.panel.compo').css({'width':'68%'});
 			    var detachedCompo = $('.panel.compo[compo=-1]').detach();
@@ -67,8 +66,8 @@ function leekwars_team_management_enhancer(){
 
 function injectMe(){
 	//ajout de ce userscript dans la page
-	var script = document.createElement('script'); 
-	script.type = 'text/javascript'; 
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
 	script.innerHTML = ""+leekwars_team_management_enhancer+"leekwars_team_management_enhancer();";//lol
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
@@ -76,8 +75,8 @@ function injectMe(){
 
 //Ajout dépendance avec mon utilitaire de scripts
 if(typeof WS === "undefined"){
-	var script = document.createElement('script'); 
-	script.type = 'text/javascript'; 
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
 	script.src="https://rawgit.com/jogalaxy/leekwars_v2/master/ws_lib.user.js";
 	script.onload = function(){
 		injectMe();

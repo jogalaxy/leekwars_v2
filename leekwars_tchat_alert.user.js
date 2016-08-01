@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Tchat Alert
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.8
+// @version       0.9
 // @description   Alerte l'utilisateur quand un tag personnalisé est rentré sur le tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_alert.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_alert.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 

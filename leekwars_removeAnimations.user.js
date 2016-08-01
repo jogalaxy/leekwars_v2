@@ -126,6 +126,8 @@ LW.on('pageload', function()
                     }
                 }
 
+                game.actions.filter(function(a) { return a[0] === ACTION_USE_WEAPON && a[3] === 11;})
+
 
 			}
 		}, 100);

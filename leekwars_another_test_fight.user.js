@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Another Test Fight
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.3
 // @description   Permet de relancer un combat de test avec les mêmes paramètres
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_another_test_fight.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_another_test_fight.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 

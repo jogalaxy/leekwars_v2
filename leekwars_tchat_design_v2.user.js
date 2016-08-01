@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name          [Leek Wars] Tchat Design
+// @name          [Leek Wars] Tchat Design v2
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.22
+// @version       0.12
 // @description   Change le design du tchat
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
-// @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_design.user.js
-// @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_design.user.js
+// @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_design_v2.user.js
+// @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_tchat_design_v2.user.js
 // @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
@@ -28,12 +28,13 @@
 	function init(farmer_id)
 	{
 		addGlobalStyle('\
-			.chat-messages\
+			#chat\
 			{\
-				background-color: #e4ded9;\
+				background-color: rgb(50, 50, 50);\
 			}\
-			#chat .chat-messages {\
-				background-color: #e4ded9;\
+			.chat-messages, #chat .chat-messages\
+			{\
+				background-color: rgb(30, 30, 30);\
 			}\
 			.chat-messages .chat-message\
 			{\
@@ -54,15 +55,16 @@
 			}\
 			.chat-messages .chat-avatar\
 			{\
-				background-color: #fff;\
 				border-radius: 40px;\
-				box-shadow: 1px 1px 5px #555;\
+				box-shadow: 0px 0px 10px rgb(90, 90, 90);\
 			}\
 			.chat-messages .chat-message\
 			{\
 				float:left;\
-				background-color: #fff;\
+				background-color: rgb(40, 40, 40);\
+				color: #d7d7d7;\
 				margin-left: 60px;\
+				border: 0;\
 			}\
 			.chat-messages .chat-message .chat-avatar\
 			{\
@@ -71,7 +73,7 @@
 			.chat-messages .chat-message[author="'+farmer_id+'"]\
 			{\
 				float:right;\
-				background-color: #e3f4c7;\
+				background-color: rgb(60, 60, 60);\
 				margin-right: 60px;\
 			}\
 			.chat-messages .chat-message[author="'+farmer_id+'"] .chat-avatar\
@@ -82,6 +84,10 @@
 			.chat-messages .chat-message[author="'+farmer_id+'"] .chat-message-author\
 			{\
 				text-align: right;\
+			}\
+			#chat-input\
+			{\
+				background-color: #f0f0f0;\
 			}\
 		');
 	}

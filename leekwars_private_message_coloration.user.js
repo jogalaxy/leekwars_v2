@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Private Message Coloration
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.1
+// @version       0.2
 // @description   Colore les messages privés non lus
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_private_message_coloration.user.js
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_private_message_coloration.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 

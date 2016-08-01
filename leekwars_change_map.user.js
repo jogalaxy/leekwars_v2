@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Change MAP
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.3
 // @description   Permet de mettre sur tous les combats la map d'entrainement toute blanche
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_change_map.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_change_map.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 

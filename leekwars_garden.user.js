@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name          [Leek Wars] Fast Garden
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.11
+// @version       0.12
 // @description   Permet de lancer plus rapidement ses combats
 // @author        jojo123
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_garden.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_garden.user.js
-// @match         http://leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
@@ -33,7 +33,7 @@
 			target_id: $(this).attr('leek')
 		});
 	});
-	
+
 	// Click d'un farmer
 	$('body').on('mouseup', '#garden-farmer .farmer.enemy', function()
 	{

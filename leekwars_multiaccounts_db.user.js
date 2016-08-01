@@ -1,21 +1,20 @@
 // ==UserScript==
 // @name          [Leek Wars] Multi Accounts Database
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.2
+// @version       0.3
 // @description   Affiche le propriétaire des multi-comptes
 // @author        jojo123 && Tist59
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
 // @downloadURL   https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_multiaccounts_db.user.js
 // @updateURL     https://github.com/jogalaxy/leekwars_v2/raw/master/leekwars_multiaccounts_db.user.js
-// @match         http://leekwars.com/*
-// @match         http://www.leekwars.com/*
+// @match         *://*.leekwars.com/*
 // @grant         none
 // ==/UserScript==
 
 // Récupérer la liste des multi-comptes
 
-var script = document.createElement('script'); 
-script.type = 'text/javascript'; 
+var script = document.createElement('script');
+script.type = 'text/javascript';
 script.src = 'https://rawgit.com/jogalaxy/leekwars_v2/master/multiaccounts_db.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
