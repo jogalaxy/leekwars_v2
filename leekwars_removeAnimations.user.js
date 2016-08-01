@@ -15,6 +15,22 @@ function mainRemoveAnimations () {
 
 (function() {
 
+    // intercepte la fonction "fnName" de l'objet object, et applique la fonction options.before avant l'appel, et la fonction options.after après l'appel
+    // exemple d'appel visible sur l'option slowMotion plus bas.
+    function interceptFunction (object, fnName, options) {
+        var noop = function () {};
+        var fnToWrap = object[fnName];
+        var before = options.before || noop;
+        var after = options.after || noop;
+
+        object[fnName] = function () {
+            before.apply(this, arguments);
+            var result = fnToWrap.apply(this, arguments);
+            after.apply(this, arguments);
+            return result
+        }
+    }
+    
 LW.on('pageload', function()
 {
     if (LW.currentPage == 'settings') {
@@ -27,6 +43,7 @@ LW.on('pageload', function()
         var removeChipAureol = localStorage['removeChipAureol'] === undefined ? true : (localStorage['removeChipAureol'] === 'true');
         var removeChipHeal = localStorage['removeChipHeal'] === undefined ? true : (localStorage['removeChipHeal'] === 'true');
         var removeSay = localStorage['removeSay'] === undefined ? false : (localStorage['removeSay'] === 'true');
+        var addSlowMotion = localStorage['addSlowMotion'] === undefined ? false : (localStorage['addSlowMotion'] === 'true');
 
         $('body').on('click', '#remove_animation_apply', function () {
 			var removeGas = $('#removeGas').is(':checked');
@@ -45,6 +62,8 @@ LW.on('pageload', function()
         	localStorage['removeChipHeal'] = removeChipHeal;
             var removeSay = $('#removeSay').is(':checked');
         	localStorage['removeSay'] = removeSay;
+            var addSlowMotion = $('#addSlowMotion').is(':checked');
+        	localStorage['addSlowMotion'] = addSlowMotion;
         	_.toast('Paramètres sauvegardés !');
         });
 
@@ -57,6 +76,7 @@ LW.on('pageload', function()
         + 'Chip aureol (croix au dessus du leek) : <input type="checkbox" id="removeChipAureol"><br>'
         + 'Chip heal (animation verte quand on soigne un leek) : <input type="checkbox" id="removeChipHeal"><br>'
         + 'Say : <input type="checkbox" id="removeSay"><br>'
+        + 'Slow Motion (ajoute un ralenti sur les kills) : <input type="checkbox" id="addSlowMotion"><br>'
         + '<br><br><center><input class="button green" value="Appliquer" id="remove_animation_apply"></center></div></div></div>');
 
     	$('#removeGas').prop('checked', removeGas);
@@ -67,6 +87,7 @@ LW.on('pageload', function()
     	$('#removeChipAureol').prop('checked', removeChipAureol);
     	$('#removeChipHeal').prop('checked', removeChipHeal);
     	$('#removeSay').prop('checked', removeSay);
+    	$('#addSlowMotion').prop('checked', addSlowMotion);
     }
 
 	if (LW.currentPage == 'fight')
@@ -79,6 +100,8 @@ LW.on('pageload', function()
         var removeChipAureol = localStorage['removeChipAureol'] === undefined ? true : (localStorage['removeChipAureol'] === 'true');
         var removeChipHeal = localStorage['removeChipHeal'] === undefined ? true : (localStorage['removeChipHeal'] === 'true');
         var removeSay = localStorage['removeSay'] === undefined ? false : (localStorage['removeSay'] === 'true');
+        var addSlowMotion = localStorage['addSlowMotion'] === undefined ? false : (localStorage['addSlowMotion'] === 'true');
+
 
 		var initInt = setInterval(function()
 		{
@@ -124,6 +147,21 @@ LW.on('pageload', function()
                     for (var i = 0; i<nbLeeks; i++){
                         game.leeks[i].say = function(message) {};
                     }
+                }
+                
+                //slow motion
+                if (addSlowMotion) {
+                    interceptFunction(game, "doAction", {
+                        before: function(action){
+                            if(action[0]==ACTION_PLAYER_DEAD){
+                                var oldGameSpeed = game.speed;
+                                game.speed = 0.1;
+                                setTimeout(function(){
+                                    game.speed = oldGameSpeed;
+                                }, 1000); // 1 seconde de slow motion. faire un param ?
+                            }
+                        }
+                    });
                 }
 
                 game.actions.filter(function(a) { return a[0] === ACTION_USE_WEAPON && a[3] === 11;})
