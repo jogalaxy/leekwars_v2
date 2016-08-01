@@ -178,10 +178,53 @@ LW.on('pageload', function()
                     interceptFunction(game, "doAction", {
                         before: function(action){
                             if (inArray(game.currentAction, slowMotionActions)){ 
+                                var gameDiv = document.getElementById("layers");
+                                var wasted;
+                                var bgCanvas = document.getElementById("bg-canvas");
+                                var gameCanvas = document.getElementById("game-canvas");
+                                if(gameDiv.lastChild["isWastedScreen"] === true){
+                                    //wasted déjà créé
+                                    wasted = gameDiv.lastChild;
+                                }else{
+                                    //besoin de crééer la div wasted
+                                    wasted = document.createElement("div");
+                                    wasted["isWastedScreen"] = true;
+                                    wasted.style.textAlign = "center";
+                                    wasted.style.position = "absolute";
+                                    wasted.style.top = "0";
+                                    wasted.style.left = "0";
+                                    wasted.style.height = "100%";
+                                    wasted.style.width = "100%";
+                                    wasted.style.backgroundImage = "url(https://i.imgur.com/JN1rYNl.png)";
+                                    wasted.style.backgroundSize = "auto 100%";
+                                    wasted.style.backgroundPosition = "center";
+                                    wasted.style.backgroundRepeat = "no-repeat";
+                                    wasted.style.transition = "all 1s";
+                                    gameDiv.appendChild(wasted);
+                                    // ajoute une transition sur les canvas
+                                    bgCanvas.style.transition = "all 500ms";
+                                    gameCanvas.style.transition = "all 500ms";
+                                }
+                                
+                                wasted.style.opacity="1";
+                                wasted.style.display = "block";
+                                bgCanvas.style["-webkit-filter"] = "grayscale(100%)";
+                                bgCanvas.style.filter = "grayscale(100%)";
+                                gameCanvas.style["-webkit-filter"] = "grayscale(100%)";
+                                gameCanvas.style.filter = "grayscale(100%)";
                                 var oldGameSpeed = game.speed;
                                 game.speed = 0.1;
+                                
                                 setTimeout(function(){
                                     game.speed = oldGameSpeed;
+                                    wasted.style.opacity="0";
+                                    bgCanvas.style["-webkit-filter"] = "none";
+                                    bgCanvas.style.filter = "none";
+                                    gameCanvas.style["-webkit-filter"] = "none";
+                                    gameCanvas.style.filter = "none";
+                                    setTimeout(function(){
+                                        wasted.style.display = "none";
+                                    }, 500);
                                 }, 1000); // 1 seconde de slow motion. faire un param ?
                             }
                         }
