@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Leek Wars] Editor - Import & Export
 // @namespace     https://github.com/jogalaxy/leekwars_v2
-// @version       0.4
+// @version       0.5
 // @description   Permet d'importer et d'exporter ses IA
 // @author        jojo123 && caragane
 // @projectPage   https://github.com/jogalaxy/leekwars_v2
@@ -98,7 +98,7 @@ function export_all_functions()
                 $.each(workspace.ais, function (i, aiFile) {
                     var tree = [];
                     if (aiFile.folder != 0) {
-                        tree.unshift(workspace.folders.filter(function (f) { return f.id == aiFile.folder;                    }) [0]);
+                        tree.unshift(workspace.folders.filter(function (f) { return f.id == aiFile.folder; }) [0]);
                         while (tree[0].folder != 0)
                         tree.unshift(workspace.folders.filter(function (f) {
                             return f.id == tree[0].folder;
