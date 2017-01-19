@@ -91,17 +91,37 @@ function export_all_functions()
 {
         var zip = new JSZip();
 
-        for(var i in editors)
-        {
-                $.ajax({
-                        url: 'https://leekwars.com/api/ai/get/' + i +'/$',
-                        dataType: "json",
-                        success: function(result){
-                                zip.file(result.ai.name, result.ai.code);
-                        },
-                        async: false
+        $.ajax({
+            url: 'https://leekwars.com/api/ai/get-farmer-ais/$',
+            dataType: 'json',
+            success: function (workspace) {
+                $.each(workspace.ais, function (i, aiFile) {
+                    var tree = [];
+                    if (aiFile.folder != 0) {
+                        tree.unshift(workspace.folders.filter(function (f) { return f.id == aiFile.folder;                    }) [0]);
+                        while (tree[0].folder != 0)
+                        tree.unshift(workspace.folders.filter(function (f) {
+                            return f.id == tree[0].folder;
+                        }) [0]);
+                    }
+                    var path = '';
+                    $.each(tree, function (i, f) {
+                      path = path + '/' + f.name;
+                  });
+                    path = path + '/' + aiFile.name;
+                    path = path.substring(1, path.length);
+                    $.ajax({
+                      url: 'https://leekwars.com/api/ai/get/' + aiFile.id + '/$',
+                      dataType: 'json',
+                      success: function (result) {
+                        zip.file(path, result.ai.code);
+                    },
+                    async: false
                 });
-        }
+                });
+            },
+            async: false
+        });
 
         var a = document.createElement('a');
         document.body.appendChild(a);
